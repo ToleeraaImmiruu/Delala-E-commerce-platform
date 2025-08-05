@@ -1,0 +1,141 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 30px;
+  background: #1a1a2e;           /* From your login page */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f8c94e;               /* Text color changed */
+  cursor: pointer;
+  margin-left: 3rem;
+}
+
+.navbar-logo span {
+  color: #f8c94e;
+
+}
+
+.Logo-image {
+  width: 80px;
+  height: auto;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+  margin-right: 3rem;
+}
+
+.navbar-links a {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f8c94e;               /* Links now yellow */
+  transition: color 0.3s ease-in-out;
+}
+
+.navbar-links a:hover {
+  color: white;
+}
+
+.cart-icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: #f8c94e;               /* Cart icon yellow */
+  transition: color 0.3s ease-in-out;
+}
+
+.cart-icon:hover {
+  color: white;
+}
+
+.login-btn {
+  padding: 6px 14px;
+  background-color: #f8c94e;     /* Button background yellow */
+  color: #1a1a2e;               /* Button text dark */
+  border: none;
+  border-radius: 5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+.login-btn:hover {
+  background-color: rgb(225, 220, 250);
+}
+
+/* Hamburger icon (hidden by default) */
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  color: #f8c94e;
+  cursor: pointer;
+  z-index: 1100;
+}
+
+/* Responsive Styles */
+@media (max-width: 480px) {
+  .navbar-links {
+    position: absolute;
+    top: 100px;
+    display: none;
+    background-color: #1a1a2e;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding:20px 60px;
+    height: calc(70vh - 70px);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .navbar {
+display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 30px;
+gap: 1rem;
+width:106%;
+}
+
+  .navbar-links.active {
+    transform: translateX(0);
+  
+    width: 60%;
+    height: 400%;
+display: block;
+    margin-top: 0.2rem;
+    right: -3rem;
+  }
+
+  .navbar-links li {
+    width:100%;
+  }
+
+  .navbar-links a {
+    width: 9 0%;
+    display: block;
+    padding: 10px 0;
+  }
+
+  .hamburger {
+    display: block;
+    margin-right: 0rem;
+  }
+  .navbar-logo{
+    margin-left: -1.9rem;
+  }
+}
