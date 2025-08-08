@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 12px 30px;
-  background: #1a1a2e;           /* From your login page */
+  background: #162447;           /* From your login page */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   position: sticky;
   top: 0;
@@ -86,12 +86,43 @@
   cursor: pointer;
   z-index: 1100;
 }
+/* --- Search Bar --- */
+.navbar-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.search-icon{
+  position: absolute;
+  left: 78%; /* adjust based on input width */
+  color: hsl(43, 92%, 64%);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.navbar-search input {
+  width: 70%;
+ padding: 8px 12px 8px 36px;
+  border: 1px solid #f8c94e;
+  border-radius: 20px;
+  outline: none;
+  background: #0f3460;
+  color: #f8c94e;
+  transition: width 0.3s ease-in-out;
+  
+}
+
+.navbar-search input:focus {
+  width: 75%;
+}
 
 /* Responsive Styles */
 @media (max-width: 480px) {
   .navbar-links {
     position: absolute;
-    top: 100px;
+
     display: none;
     background-color: #1a1a2e;
     flex-direction: column;
@@ -108,17 +139,18 @@ display: flex;
   align-items: center;
   padding: 12px 30px;
 gap: 1rem;
-width:106%;
+width:118%;
+
 }
 
   .navbar-links.active {
     transform: translateX(0);
   
-    width: 60%;
-    height: 400%;
+    width: 64%;
+    height: 50%;
 display: block;
-    margin-top: 0.2rem;
-    right: -3rem;
+    margin-top: 6.6rem;
+    margin-right:0.2rem;
   }
 
   .navbar-links li {
@@ -138,4 +170,26 @@ display: block;
   .navbar-logo{
     margin-left: -1.9rem;
   }
+  .navbar-search {
+    display: none; /* Hide search bar on mobile for now */
+  }
+
+  .navbar-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 60%;
+    background-color: #1a1a2e;
+    flex-direction: column;
+    padding: 100px 30px;
+    gap: 20px;
+    transition: right 0.4s ease-in-out; /* Smooth slide */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+  }
+
+  .navbar-links.active {
+    right: 0;
+  }
 }
+

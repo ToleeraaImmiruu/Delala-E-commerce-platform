@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "../Styling/Navbar.css";
-import { FaShoppingCart } from "react-icons/fa";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaShoppingCart, FaBars, FaTimes ,FaSearch} from "react-icons/fa";
 import Logo from "../assets/images/DELALA.png";
 
 function Navbar() {
@@ -11,9 +10,16 @@ function Navbar() {
 
   return (
     <nav className="navbar">
+      {/* Logo */}
       <div className="navbar-logo">
-        <img className='Logo-image' src={Logo} alt="logo image" />
+        <img className='Logo-image' src={Logo} alt="logo" />
         Dalala<span>.com</span>
+      </div>
+
+      {/* Search Bar */}
+      <div className="navbar-search">
+        <FaSearch className="search-icon " />
+        <input type="text" placeholder="Search cars..." />
       </div>
 
       {/* Hamburger Icon (Mobile) */}
@@ -21,7 +27,7 @@ function Navbar() {
         {isOpen ? <FaTimes /> : <FaBars />}
       </div>
 
-      {/* Links */}
+      {/* Navigation Links */}
       <ul className={`navbar-links ${isOpen ? "active" : ""}`}>
         <li><a href="#home" onClick={toggleMenu}>Home</a></li>
         <li><a href="#about" onClick={toggleMenu}>About</a></li>
