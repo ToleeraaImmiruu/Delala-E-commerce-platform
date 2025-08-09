@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "../Styling/Navbar.css";
+import { Link, } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes ,FaSearch} from "react-icons/fa";
 import Logo from "../assets/images/DELALA.png";
 
@@ -37,7 +38,11 @@ function Navbar() {
           <FaShoppingCart className="cart-icon" />
         </li>
         <li>
-          <button className="login-btn" onClick={toggleMenu}>Login</button>
+          
+            <Link to="/login" className="login-btn1">
+                      Login
+                    </Link>
+
         </li>
       </ul>
     </nav>

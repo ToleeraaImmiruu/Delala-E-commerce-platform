@@ -1,0 +1,116 @@
+/* Container */
+.contact-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 20px;
+    background: linear-gradient(135deg, #f1f1f1, #ececec);
+  margin-top: -2rem;
+  text-align: center;
+border-radius: 2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title */
+.contact-container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.contact-subtitle {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 40px;
+}
+
+/* Grid layout */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  align-items: start;
+}
+
+/* Contact form */
+.contact-form {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  text-align: left;
+}
+
+.contact-form h2 {
+  margin-bottom: 15px;
+  color: #4a90e2;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.4);
+  outline: none;
+}
+
+.contact-form button {
+  width: 100%;
+  background: #4a90e2;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.contact-form button:hover {
+  background: #357ab8;
+  transform: translateY(-2px);
+}
+
+/* Contact Info */
+.contact-info {
+  background: #f8faff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  text-align: left;
+  margin-top: -1rem;
+
+}
+
+.contact-info h2 {
+  margin-top: -1rem;
+  margin-bottom: 15px;
+  color: #4a90e2;
+}
+
+.contact-info p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.contact-info iframe {
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 10px;
+  }
+}
