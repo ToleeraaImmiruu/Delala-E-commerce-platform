@@ -38,6 +38,7 @@
   gap: 40px;
   list-style: none;
   margin-right: 3rem;
+
 }
 
 .navbar-links a {
@@ -46,6 +47,7 @@
   font-weight: 500;
   color: #f8c94e;               /* Links now yellow */
   transition: color 0.3s ease-in-out;
+ 
 }
 
 .navbar-links a:hover {
@@ -64,9 +66,9 @@
 }
 
 .login-btn1 {
-  padding: 15px 30px;
-  background-color: #7225dd;     /* Button background yellow */
-  color: #b8b8c6;               /* Button text dark */
+  padding: 15px 30px; 
+  background-color: #7225dd;   
+  color:  #ffffff;               
   border: none;
   border-radius:7px;
   font-weight: 700;
@@ -74,7 +76,7 @@
   transition: background 0.3s ease-in-out;
 }
 
-.login-btn:hover {
+.login-btn1:hover {
   background-color: rgb(225, 220, 250);
 }
 

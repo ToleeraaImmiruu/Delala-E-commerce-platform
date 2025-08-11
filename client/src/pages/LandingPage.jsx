@@ -85,7 +85,7 @@ const carData2 = [
 const LandingPage = () => {
   return (
     
-    <div className="HomePage">
+    <div id='home' className="HomePage">
     <div className="LandingPage">
     <div className="LandingText">
       <h1>"Skip the Stress.  </h1>

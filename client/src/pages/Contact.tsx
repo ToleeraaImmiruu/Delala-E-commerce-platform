@@ -18,7 +18,7 @@ function ContactUs() {
   };
 
   return (
-    <div className="contact-container">
+    <div id="contact" className="contact-container">
       <h1>Contact Us</h1>
       <p className="contact-subtitle">
         Have a question or need help? We’re here to assist you.

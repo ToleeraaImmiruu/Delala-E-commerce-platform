@@ -29,7 +29,7 @@ const Data = [
 
 function Services() {
   return (
-    <div className="ServicesSection">
+    <div  id='service' className="ServicesSection">
       <h1>Our Services</h1>
       <div className="ServicesGrid">
         {Data.map((item) => (

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "../Styling/Navbar.css";
-import { Link, } from "react-router-dom";
 import { FaShoppingCart, FaBars, FaTimes ,FaSearch} from "react-icons/fa";
 import Logo from "../assets/images/DELALA.png";
 
@@ -30,23 +29,29 @@ function Navbar() {
 
       {/* Navigation Links */}
       <ul className={`navbar-links ${isOpen ? "active" : ""}`}>
-        <li><a href="#home" onClick={toggleMenu}>Home</a></li>
+<li>
+  <a
+    href="#home"
+    onClick={(e) => {
+      e.preventDefault();       
+      document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
+    }}
+  >
+    Home
+  </a>
+</li>
         <li><a href="#about" onClick={toggleMenu}>About</a></li>
-        <li><a href="#services" onClick={toggleMenu}>Services</a></li>
+        <li><a href="#service" onClick={toggleMenu}>Services</a></li>
         <li><a href="#contact" onClick={toggleMenu}>Contact Us</a></li>
         <li className="cart" onClick={toggleMenu}>
           <FaShoppingCart className="cart-icon" />
         </li>
         <li>
-          
-            <Link to="/login" className="login-btn1">
-                      Login
-                    </Link>
-
+          <button className="login-btn1" onClick={toggleMenu}>Login</button>
         </li>
       </ul>
     </nav>
   );
 }
-
+  
 export default Navbar;

@@ -4,7 +4,7 @@ import '../Styling/about.css';
 
 const AboutPage: React.FC = () => {
   return (
-    <div className="about-container">
+    <div id="about"  className="about-container">
       {/* Hero Section */}
       <section className="hero-section">
         <h1 className="hero-title">About Delala</h1>

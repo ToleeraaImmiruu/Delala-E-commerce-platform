@@ -4,10 +4,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import testRoutes from "./routes/testRoutes.js";
+import uploadRoutes from './routes/uploadRoutes.js'
 
 
 
-dotenv.config(); // Load .env variables
+dotenv.config();
 connectDB();
 
 const app = express();
@@ -18,7 +19,8 @@ app.use(express.json());
 
 // Use test routes
 app.use("/", testRoutes);
-
+app.use('/images', express.static('uploads'));
+app.use('/api', uploadRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000;
