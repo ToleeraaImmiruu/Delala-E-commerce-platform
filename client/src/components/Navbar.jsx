@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "../Styling/Navbar.css";
 import { FaShoppingCart, FaBars, FaTimes ,FaSearch} from "react-icons/fa";
 import Logo from "../assets/images/DELALA.png";
-import { useNavigate } from "react-router-dom"
+import { useNavigate,Link } from "react-router-dom"
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +18,10 @@ function Navbar() {
       {/* Logo */}
       <div className="navbar-logo">
         <img className='Logo-image' src={Logo} alt="logo" />
-        Dalala<span>.com</span>
+      <a href="#home"  onClick={(e) => {
+      e.preventDefault();       
+      document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
+    }}> Dalala<span>.com</span> </a> 
       </div>
 
       {/* Search Bar */}
@@ -35,17 +38,16 @@ function Navbar() {
       {/* Navigation Links */}
       <ul className={`navbar-links ${isOpen ? "active" : ""}`}>
 <li>
-  <a
-    href="#home"
-    onClick={(e) => {
-      e.preventDefault();       
-      document.getElementById("home")?.scrollIntoView({ behavior: "smooth" });
-    }}
-  >
-    Home
-  </a>
+  <Link to="/seller-dashboard">
+    Seller
+  </Link>
 </li>
-        <li><a href="#about" onClick={toggleMenu}>About</a></li>
+<li>
+  <Link to="/seller-dashboard">
+    Buyer 
+  </Link>
+</li>
+        
         <li><a href="#service" onClick={toggleMenu}>Services</a></li>
         <li><a href="#contact" onClick={toggleMenu}>Contact Us</a></li>
         <li className="cart" onClick={toggleMenu}>
