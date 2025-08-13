@@ -8,7 +8,7 @@ import authRoutes from "./routes/authRoute.js";
 import uploadRoutes from './routes/uploadRoutes.js';
 import userRouter from './routes/userRouter.js'
 
-
+import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 
 dotenv.config();
@@ -26,6 +26,7 @@ app.use("/api/auth", authRoutes);
 app.use('/images', express.static('uploads'));
 app.use('/api', uploadRoutes);
 app.use('/api/',userRouter)
+app.use("/", dashboardRoutes);
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
