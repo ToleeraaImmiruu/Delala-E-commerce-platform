@@ -102,14 +102,13 @@ function App() {
         <Route
           path="/buyer-dashboard"
           element={
-           <ProtectedRoute role={["seller", "admin"]}>
-
+            <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <BuyerDashboard user={user} />
             </ProtectedRoute>
           }
         />
-      </Routes>
+      </Routes> 
     </Router>
   );
 }
