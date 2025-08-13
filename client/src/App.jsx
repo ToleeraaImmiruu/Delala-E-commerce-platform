@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
+// Navbars
 import Navbar from "./components/Navbar";
 import BuyerNavbar from "./components/BuyerNavbar";
 import SellerNavbar from "./components/SellerNavbar";
 import AdminNavbar from "./components/AdminNavbar";
+
+// Pages
 import LandingPage from "./pages/LandingPage";
 import Services from "./pages/services";
 import About from "./pages/about";
@@ -14,17 +17,24 @@ import Register from "./pages/Register";
 import LoginPage from "./pages/Login";
 import SellerDashboard from "./pages/SellerDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
-
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
 
   // ProtectedRoute wrapper
   const ProtectedRoute = ({ children, role }) => {
-    if (!user) return <Navigate to="/login" />;
-    if (role && user.role !== role) return <Navigate to="/" />;
+    const storedUser = localStorage.getItem("user");
+    const currentUser = storedUser ? JSON.parse(storedUser) : null;
+
+    if (!currentUser) return <Navigate to="/login" replace />;
+
+    // Admin can access all dashboards
+    if (role && currentUser.role !== role && currentUser.role !== "admin")
+      return <Navigate to="/" replace />;
+
     return children;
   };
 
@@ -45,15 +55,17 @@ function App() {
             </>
           }
         />
-        {/* profile  */}
+
+        {/* Profile */}
         <Route
-  path="/profile"
-  element={
-    <ProtectedRoute role={user?.role}>
-      <Profile />
-    </ProtectedRoute>
-  }
-/>
+          path="/profile"
+          element={
+            <ProtectedRoute role={user?.role}>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
         {/* Register */}
         <Route
           path="/register"
@@ -81,7 +93,7 @@ function App() {
           path="/admin-dashboard"
           element={
             <ProtectedRoute role="admin">
-               <AdminNavbar user={user} setUser={setUser} setToken={setToken} />
+              <AdminNavbar user={user} setUser={setUser} setToken={setToken} />
               <AdminDashboard user={user} />
             </ProtectedRoute>
           }
@@ -92,7 +104,7 @@ function App() {
           path="/seller-dashboard"
           element={
             <ProtectedRoute role="seller">
-            <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
+              <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
               <SellerDashboard user={user} />
             </ProtectedRoute>
           }
@@ -108,7 +120,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-      </Routes> 
+      </Routes>
     </Router>
   );
 }
