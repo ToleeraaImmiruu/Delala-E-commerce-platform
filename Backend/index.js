@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import testRoutes from "./routes/testRoutes.js";
 import authRoutes from "./routes/authRoute.js";
 import uploadRoutes from './routes/uploadRoutes.js';
+import userRouter from './routes/userRouter.js'
 
 
 
@@ -24,7 +25,7 @@ app.use("/", testRoutes);
 app.use("/api/auth", authRoutes);
 app.use('/images', express.static('uploads'));
 app.use('/api', uploadRoutes);
-
+app.use('/api/',userRouter)
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
