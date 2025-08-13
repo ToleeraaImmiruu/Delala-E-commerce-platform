@@ -9,6 +9,27 @@
   margin-top: -3.5rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+/* Role select dropdown */
+.register-form select {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 2px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.register-form select:focus {
+  outline: none;
+  border-color: rgb(66, 33, 199);
+  box-shadow: 0 0 8px rgba(66, 33, 199, 0.4);
+}
+
+.register-form select.input-error {
+  border-color: #e74c3c !important;
+}
 
 /* Form styles */
 .register-form {

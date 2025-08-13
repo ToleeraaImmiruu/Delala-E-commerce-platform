@@ -37,6 +37,12 @@
   font-weight: 600;
   color: #333;
 }
+.backend-error-msg {
+  margin-top: 12px;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 
 .login-form input {
   width: 100%;

@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import "../Styling/Navbar.css";
 import { FaShoppingCart, FaBars, FaTimes ,FaSearch} from "react-icons/fa";
 import Logo from "../assets/images/DELALA.png";
-
+import { useNavigate } from "react-router-dom"
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => setIsOpen(!isOpen);
 
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
   return (
     <nav className="navbar">
       {/* Logo */}
@@ -46,9 +51,11 @@ function Navbar() {
         <li className="cart" onClick={toggleMenu}>
           <FaShoppingCart className="cart-icon" />
         </li>
-        <li>
-          <button className="login-btn1" onClick={toggleMenu}>Login</button>
-        </li>
+     <li>
+      <button className="login-btn1" onClick={handleLoginClick}>
+        Login
+      </button>
+    </li>
       </ul>
     </nav>
   );
