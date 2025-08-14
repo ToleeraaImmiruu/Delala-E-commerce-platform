@@ -3,13 +3,15 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import testRoutes from "./routes/testRoutes.js";
+
 import authRoutes from "./routes/authRoute.js";
 import uploadRoutes from './routes/uploadRoutes.js';
 import userRouter from './routes/userRouter.js'
 import pendingRoutes from "./routes/pendingRoutes.js";
 import adminModerationRoutes from "./routes/adminModerationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+import PublicView from "./routes/productRoutes.js";
+
 // import Pending from "./routes/FetchRoutes.js";
 
 
@@ -22,8 +24,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Use test routes
-app.use("/", testRoutes);
+
 app.use("/api/auth", authRoutes);
 app.use('/images', express.static('uploads'));
 app.use('/api', uploadRoutes);
@@ -31,6 +32,7 @@ app.use('/api/',userRouter)
 app.use("/", dashboardRoutes);
 
 app.use("/api", pendingRoutes);
+app.use("/api", PublicView);
 // app.use("/api", Pending);
 app.use("/api", adminModerationRoutes);
 // Start server
