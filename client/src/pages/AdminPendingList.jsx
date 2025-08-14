@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function AdminPendingList() {
-  const [items, setItems] = useState([]);
+const AdminDashboard = () => {
+  const [pendingProducts, setPendingProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
-  const load = async () => {
+  const fetchPendingProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/admin/pending-products?status=pending", {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await fetch("http://localhost:5000/api/pending", {
+        headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setItems(data.items || []);
+      if (data.success) setPendingProducts(data.pending);
+      else setPendingProducts([]);
     } catch (error) {
       console.error("Error fetching pending products:", error);
     } finally {
@@ -20,95 +21,119 @@ export default function AdminPendingList() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    fetchPendingProducts();
+  }, []);
 
-  const approve = async (id) => {
-    await fetch(`/api/admin/pending-products/${id}/approve`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ adminNotes: "Approved" })
-    });
-    load();
+  const approveProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to approve this product?")) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/approve-product/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("✅ Product approved");
+        // Remove from frontend list instantly
+        setPendingProducts((prev) => prev.filter((p) => p._id !== id));
+      } else {
+        alert(`❌ Failed to approve product: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Approve error:", err);
+    }
   };
 
-  const reject = async (id) => {
-    await fetch(`/api/admin/pending-products/${id}/reject`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({ adminNotes: "Rejected: Low quality photos" })
-    });
-    load();
+  const rejectProduct = async (id) => {
+    if (!window.confirm("Are you sure you want to reject this product?")) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/reject-product/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ notes: "Rejected by admin" }), // optional notes
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("❌ Product rejected");
+        // Remove from frontend list instantly
+        setPendingProducts((prev) => prev.filter((p) => p._id !== id));
+      } else {
+        alert(`❌ Failed to reject product: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("Reject error:", err);
+    }
   };
 
-  if (loading) return <p className="text-center mt-4">Loading pending products...</p>;
+  if (loading) return <p>Loading pending products...</p>;
 
   return (
-    <div className="max-w-6xl mx-auto mt-10 p-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Pending Listings</h2>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border rounded-lg shadow-md">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="py-2 px-4 border">Name</th>
-              <th className="py-2 px-4 border">Price</th>
-              <th className="py-2 px-4 border">Location</th>
-              <th className="py-2 px-4 border">Type</th>
-              <th className="py-2 px-4 border">Images</th>
-              <th className="py-2 px-4 border">Status</th>
-              <th className="py-2 px-4 border">Actions</th>
+    <div className="max-w-6xl mx-auto p-6">
+      <h2 className="text-2xl font-bold mb-6">Pending Listings</h2>
+
+      {pendingProducts.length === 0 ? (
+        <p>No pending products.</p>
+      ) : (
+        <table className="w-full border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border p-2">Name</th>
+              <th className="border p-2">Price</th>
+              <th className="border p-2">Location</th>
+              <th className="border p-2">Type</th>
+              <th className="border p-2">Images</th>
+              <th className="border p-2">Status</th>
+              <th className="border p-2">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {items.map(it => (
-              <tr key={it._id} className="text-center">
-                <td className="py-2 px-4 border">{it.name}</td>
-                <td className="py-2 px-4 border">${it.price}</td>
-                <td className="py-2 px-4 border">{it.location}</td>
-                <td className="py-2 px-4 border">{it.type}</td>
-                <td className="py-2 px-4 border">
-                  <div className="flex gap-2 justify-center flex-wrap">
-                    {it.images.map((img, i) => (
-                      <img key={i} src={img.url} alt="" className="w-20 h-16 object-cover rounded" />
-                    ))}
-                  </div>
+            {pendingProducts.map((product) => (
+              <tr key={product._id}>
+                <td className="border p-2">{product.name}</td>
+                <td className="border p-2">${product.price}</td>
+                <td className="border p-2">{product.location}</td>
+                <td className="border p-2">{product.type}</td>
+                <td className="border p-2 flex gap-2">
+                  {product.images?.map((img) => (
+                    <img
+                      key={img._id}
+                      src={img.url}
+                      alt={product.name}
+                      className="w-20 h-16 object-cover border"
+                    />
+                  ))}
                 </td>
-                <td className="py-2 px-4 border">
-                  <span className="px-2 py-1 rounded-full bg-yellow-200 text-yellow-800 font-semibold">
-                    Pending
-                  </span>
-                </td>
-                <td className="py-2 px-4 border flex justify-center gap-2">
+                <td className="border p-2">{product.status}</td>
+                <td className="border p-2 flex gap-2">
                   <button
-                    onClick={() => approve(it._id)}
-                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition"
+                    onClick={() => approveProduct(product._id)}
+                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                   >
                     Approve
                   </button>
                   <button
-                    onClick={() => reject(it._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                    onClick={() => rejectProduct(product._id)}
+                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                   >
                     Reject
                   </button>
                 </td>
               </tr>
             ))}
-            {items.length === 0 && (
-              <tr>
-                <td colSpan="7" className="py-4 text-center text-gray-500">
-                  No pending products
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
-      </div>
+      )}
     </div>
   );
-}
+};
+
+export default AdminDashboard;

@@ -10,6 +10,7 @@ import userRouter from './routes/userRouter.js'
 import pendingRoutes from "./routes/pendingRoutes.js";
 import adminModerationRoutes from "./routes/adminModerationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
+// import Pending from "./routes/FetchRoutes.js";
 
 
 dotenv.config();
@@ -30,6 +31,7 @@ app.use('/api/',userRouter)
 app.use("/", dashboardRoutes);
 
 app.use("/api", pendingRoutes);
+// app.use("/api", Pending);
 app.use("/api", adminModerationRoutes);
 // Start server
 const PORT = process.env.PORT || 5000;

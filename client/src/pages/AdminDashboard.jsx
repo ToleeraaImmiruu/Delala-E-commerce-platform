@@ -1,12 +1,9 @@
-import React from "react";
+import React from 'react'
 
-const AdminDashboard = ({ user }) => {
+const AdminDashboard = () => {
   return (
-    <div>
-      <h1>Welcome Admin, {user?.username || "Admin"}</h1>
-      <p>This is the admin dashboard.</p>
-    </div>
-  );
-};
+    <div className='text-center color-blue'> welcome AdminDashboard </div>
+  )
+}
 
-export default AdminDashboard;
+export default AdminDashboard
