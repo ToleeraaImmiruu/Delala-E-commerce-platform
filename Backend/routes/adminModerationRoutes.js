@@ -41,7 +41,7 @@ router.post("/approve-product/:id", verifyToke, async (req, res) => {
     console.error("Approve product error:", err);
     res.status(500).json({ success: 0, message: "Server error" });
   }
-});
+})
 
 // Reject a pending product
 router.post("/reject-product/:id", verifyToke, async (req, res) => {
