@@ -7,7 +7,8 @@ import testRoutes from "./routes/testRoutes.js";
 import authRoutes from "./routes/authRoute.js";
 import uploadRoutes from './routes/uploadRoutes.js';
 import userRouter from './routes/userRouter.js'
-
+import pendingRoutes from "./routes/pendingRoutes.js";
+import adminModerationRoutes from "./routes/adminModerationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 
@@ -27,6 +28,9 @@ app.use('/images', express.static('uploads'));
 app.use('/api', uploadRoutes);
 app.use('/api/',userRouter)
 app.use("/", dashboardRoutes);
+
+app.use("/api", pendingRoutes);
+app.use("/api", adminModerationRoutes);
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

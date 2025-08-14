@@ -19,6 +19,8 @@ import SellerDashboard from "./pages/SellerDashboard";
 import BuyerDashboard from "./pages/BuyerDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
+import AdminManager from "./pages/AdminPendingList";
+import Upload from "./pages/uploadSeller";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -65,6 +67,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        
 
         {/* Register */}
         <Route
@@ -95,6 +98,7 @@ function App() {
             <ProtectedRoute role="admin">
               <AdminNavbar user={user} setUser={setUser} setToken={setToken} />
               <AdminDashboard user={user} />
+              <AdminManager/>
             </ProtectedRoute>
           }
         />
@@ -106,6 +110,7 @@ function App() {
             <ProtectedRoute role="seller">
               <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
               <SellerDashboard user={user} />
+              <Upload/>
             </ProtectedRoute>
           }
         />
