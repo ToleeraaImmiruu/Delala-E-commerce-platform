@@ -68,6 +68,72 @@ router.post("/reject-product/:id", verifyToke, async (req, res) => {
     res.status(500).json({ success: 0, message: "Server error" });
   }
 });
+// Seller edits their own product
+router.put("/edit1/:id", verifyToke, async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    console.log(
+      'pro',product
+    )
+    if (!product) {
+      return res.status(404).json({ success: 0, message: "Product not found here" });
+    }
+
+    // Check if logged-in seller is the product owner
+    if (product.sellerId.toString() !== req.user.id) {
+      return res.status(403).json({ success: 0, message: "You can only edit your own product" });
+    }
+
+    // Update allowed fields
+    const { name, price, location, type, images } = req.body;
+    if (name) product.name = name;
+    if (price) product.price = price;
+    if (location) product.location = location;
+    if (type) product.type = type;
+    if (images && images.length > 0) {
+      product.images = images;
+    }
+
+    await product.save();
+    res.json({ success: 1, message: "Product updated successfully", product });
+  } catch (err) {
+    console.error("Edit product error:", err);
+    res.status(500).json({ success: 0, message: "Server error" });
+  }
+});
+
+// Seller deletes their own product
+router.delete("/delete1/:id", verifyToke, async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).json({ success: 0, message: "Product not found" });
+    }
+
+    // Check if logged-in seller is the product owner
+    if (product.sellerId.toString() !== req.user.id) {
+      return res.status(403).json({ success: 0, message: "You can only delete your own product" });
+    }
+
+    // Delete images from Cloudinary if needed
+    if (product.images && product.images.length > 0) {
+      for (const imgUrl of product.images) {
+        try {
+          const publicId = imgUrl.split("/").pop().split(".")[0];
+          await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.warn("Failed to delete image from Cloudinary:", err.message);
+        }
+      }
+    }
+
+    await product.deleteOne();
+    res.json({ success: 1, message: "Product deleted successfully" });
+  } catch (err) {
+    console.error("Delete product error:", err);
+    res.status(500).json({ success: 0, message: "Server error" });
+  }
+});
 
 
 // Get all pending products (admin only)
