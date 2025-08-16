@@ -2,6 +2,7 @@ import React from "react";
 import "../Styling/LandingPage.css";
 import Car1 from "../assets/images/car1.avif"
 import Car2 from "../assets/images/car2.avif"
+import { useNavigate } from "react-router-dom";
 
 const carData = [
   {
@@ -83,6 +84,11 @@ const carData2 = [
 ];
 
 const LandingPage = () => {
+   const navigate = useNavigate();
+
+  const handleRedirect = () => {
+    navigate("/login");
+  };
   return (
     
     <div id='home' className="HomePage">
@@ -102,12 +108,14 @@ const LandingPage = () => {
             <p><strong>Price:</strong> {car.price}</p>
             <p><strong>Location:</strong> {car.location}</p>
             <p><strong>Type:</strong> {car.type}</p>
-            <button className="btn">{car.btn }</button>
+            <button className="btn" onClick={handleRedirect}>
+     {car.btn}
+       </button>
           </div>
         </div>
       ))}
     </div>
-<div className="ImageGallery2">
+<div className="ImageGallery22">
       {carData2.map((car) => (
         <div key={car.id} className="CarCard2">
           <img src={car.image} alt={car.model} className="GalleryImage2" />
@@ -116,7 +124,9 @@ const LandingPage = () => {
             <p><strong>Price:</strong> {car.price}</p>
             <p><strong>Location:</strong> {car.location}</p>
             <p><strong>Type:</strong> {car.type}</p>
-            <button className="btn">{car.btn }</button>
+             <button className="btn" onClick={handleRedirect}>
+     {car.btn}
+       </button>
           </div>
         </div>
       ))}

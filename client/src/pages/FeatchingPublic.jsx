@@ -7,7 +7,7 @@ const PublicProducts = ({ currentUser }) => {
   const [editingId, setEditingId] = useState(null);
   const [editData, setEditData] = useState({ name: "", price: "", location: "", type: "", images: [] });
 
-  const token = localStorage.getItem("token"); // JWT from localStorage
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchProducts();
@@ -16,9 +16,7 @@ const PublicProducts = ({ currentUser }) => {
   const fetchProducts = () => {
     setLoading(true);
     fetch("http://localhost:5000/api/public", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
       .then((data) => {
@@ -71,7 +69,6 @@ const PublicProducts = ({ currentUser }) => {
   const handleEditSubmit = async (id) => {
     try {
       const res = await fetch(`http://localhost:5000/api/edit1/${id}`, {
-        
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -95,13 +92,47 @@ const PublicProducts = ({ currentUser }) => {
 
   if (loading) return <p>Loading products...</p>;
 
+  // Inline styles for buttons
+  const buttonStyle = {
+    padding: "8px 10px",
+    margin: "5px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    transition: "all 0.3s ease",
+  };
+
+  const editButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#4CAF50",
+    color: "#fff",
+  };
+
+  const deleteButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#f44336",
+    color: "#fff",
+  };
+
+  const saveButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#2196F3",
+    color: "#fff",
+  };
+
+  const cancelButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: "#777",
+    color: "#fff",
+  };
+
   return (
     <div className="ImageGallery2">
       {products.length === 0 ? (
         <p>No products available</p>
       ) : (
-          products.map((product) => (
-          
+        products.map((product) => (
           <div key={product._id} className="CarCard2">
             {product.images && product.images.length > 0 && (
               <img src={product.images[0]} alt={product.name} className="GalleryImage2" />
@@ -138,8 +169,8 @@ const PublicProducts = ({ currentUser }) => {
                     onChange={handleEditChange}
                     placeholder="Type"
                   />
-                  <button onClick={() => handleEditSubmit(product._id)}>Save</button>
-                  <button onClick={() => setEditingId(null)}>Cancel</button>
+                  <button style={saveButtonStyle} onClick={() => handleEditSubmit(product._id)}>Save</button>
+                  <button style={cancelButtonStyle} onClick={() => setEditingId(null)}>Cancel</button>
                 </div>
               ) : (
                 <div>
@@ -147,16 +178,15 @@ const PublicProducts = ({ currentUser }) => {
                   <p><strong>Price:</strong> ${product.price}</p>
                   <p><strong>Location:</strong> {product.location}</p>
                   <p><strong>Type:</strong> {product.type}</p>
-                  <button className="btn">View Details</button>
+                  <button style={{ ...buttonStyle, backgroundColor: "#ff9800", color: "#fff"  }}>View Details</button>
 
-                  {/* ✅ Edit/Delete buttons for the seller */}
-                 {currentUser && String(product.sellerId) === String(currentUser.id || currentUser._id) && (
-  <>
-    <button onClick={() => startEditing(product)}>Edit</button>
-    <button onClick={() => handleDelete(product._id)}>Delete</button>
-  </>
-)}
-
+                  {/* Edit/Delete buttons for the seller */}
+                  {currentUser && String(product.sellerId) === String(currentUser.id || currentUser._id) && (
+                    <>
+                      <button style={editButtonStyle} onClick={() => startEditing(product)}>Edit</button>
+                      <button style={deleteButtonStyle} onClick={() => handleDelete(product._id)}>Delete</button>
+                    </>
+                  )}
                 </div>
               )}
             </div>

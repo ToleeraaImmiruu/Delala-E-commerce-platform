@@ -95,17 +95,20 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  margin-right:15rem;
+  margin-top:-2rem
 }
 .search-icon{
   position: absolute;
-  left: 78%; /* adjust based on input width */
+  left: 133%; /* adjust based on input width */
   color: hsl(43, 92%, 64%);
   font-size: 1.5rem;
   cursor: pointer;
+  margin-top:15px;
 }
 
 .navbar-search input {
-  width: 70%;
+  width: 200%;
  padding: 8px 12px 8px 36px;
   border: 1px solid #f8c94e;
   border-radius: 20px;

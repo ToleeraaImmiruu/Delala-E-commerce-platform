@@ -22,6 +22,8 @@ import Profile from "./pages/Profile";
 import AdminManager from "./pages/AdminPendingList";
 import Upload from "./pages/uploadSeller";
 import FetchPublic from "./pages/FeatchingPublic";
+import SearchResults from "./pages/SearchResults";
+
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -58,6 +60,7 @@ function App() {
             </>
           }
         />
+        <Route path="/search" element={<SearchResults />} />
 
         {/* Profile */}
         <Route
@@ -105,16 +108,18 @@ function App() {
         />
 
         {/* Seller dashboard */}
-        <Route
-          path="/seller-dashboard"
-          element={
-            <ProtectedRoute role="seller">
-              <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
-              <SellerDashboard user={user} />
-          <FetchPublic />
-            </ProtectedRoute>
-          }
-        />
+<Route
+  path="/seller-dashboard"
+  element={
+    <ProtectedRoute role="seller">
+      <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
+      <SellerDashboard user={user} />
+      {/* Pass currentUser prop here */}
+      <FetchPublic currentUser={user} />
+    </ProtectedRoute>
+  }
+/>
+
         <Route
           path="/upload"
           element={
@@ -142,5 +147,4 @@ function App() {
   );
 }
 export default App;
-        <FetchPublic /> this was which display the public route so how you fix this one 
-
+     
