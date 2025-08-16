@@ -21,6 +21,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 import AdminManager from "./pages/AdminPendingList";
 import Upload from "./pages/uploadSeller";
+import FetchPublic from "./pages/FeatchingPublic";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -110,7 +111,17 @@ function App() {
             <ProtectedRoute role="seller">
               <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
               <SellerDashboard user={user} />
-              <Upload/>
+          <FetchPublic />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute role="seller">
+              <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
+                  
+              <Upload  user={user}/>
             </ProtectedRoute>
           }
         />
@@ -122,6 +133,7 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <BuyerDashboard user={user} />
+            {/* <FetchPublic/> */}
             </ProtectedRoute>
           }
         />
@@ -129,5 +141,6 @@ function App() {
     </Router>
   );
 }
-
 export default App;
+        <FetchPublic /> this was which display the public route so how you fix this one 
+

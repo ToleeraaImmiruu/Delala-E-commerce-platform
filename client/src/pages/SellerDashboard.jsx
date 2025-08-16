@@ -38,12 +38,10 @@ const SellerDashboard = ({ user }) => {
 
   return (
     <div className="dashboard-container">
-      <h2>Seller Dashboard</h2>
+      <h2 className="text-center t-20px">Seller Dashboard</h2>
       {dashboardData ? (
         <div>
           <p>{dashboardData.message}</p>
-          {/* Add more seller-specific dashboard UI here */}
-          <p>Welcome, {user?.username}!</p>
         </div>
       ) : (
         <p>No data available</p>

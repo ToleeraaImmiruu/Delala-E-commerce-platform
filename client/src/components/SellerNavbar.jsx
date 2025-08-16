@@ -21,12 +21,12 @@ const SellerNavbar = ({ user, setUser, setToken }) => {
 
       {/* Navigation links */}
       <div className="flex items-center space-x-4">
-        <Link to="/uploadSeller" className="hover:text-blue-500">
+    
+
+        <Link to="/upload" className="hover:text-blue-500">
           Upload
         </Link>
-        <Link to="/seller-products" className="hover:text-blue-500">
-          Products
-        </Link>
+       
         <Link to="/seller-orders" className="hover:text-blue-500">
           Orders
         </Link>
