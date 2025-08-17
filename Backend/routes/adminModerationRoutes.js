@@ -5,8 +5,9 @@ import Product from "../models/Product.js";
 import { requireAuth, requireRole } from "../middleware/authoMiddleware.js";
 import { cloudinary } from "../middleware/uploadMiddleware.js";
 import { nextCarId } from "../utils/nextCarId.js";
-import verifyToke from "../middleware/authoMiddleware.js";
 
+import verifyToke from "../middleware/authoMiddleware.js";
+import { getAllUsers, updateUserRole, toggleUserStatus, deleteUser } from "../controllers/userController.js";
 const router = express.Router();
 
 // Approve a pending product
@@ -147,5 +148,12 @@ router.get("/pending", verifyToke, async (req, res) => {
     res.status(500).json({ success: 0, message: "Server error" });
   }
 });
+
+// Only admin can manage users
+router.get("/getall", verifyToke, requireRole("admin"), getAllUsers);
+router.put("/:id/role", verifyToke, requireRole("admin"), updateUserRole);
+router.patch("/:id/status", verifyToke, requireRole("admin"), toggleUserStatus);
+router.delete("/:id", verifyToke, requireRole("admin"), deleteUser);
+
 
 export default router;
