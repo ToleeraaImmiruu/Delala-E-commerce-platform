@@ -23,7 +23,7 @@ const PublicProducts = () => {
   if (loading) return <p>Loading products...</p>;
 
   return (
-    <div className="ImageGallery2">
+    <div className="ImageGallery22">
       {products.length === 0 ? (
         <p>No products available</p>
       ) : (

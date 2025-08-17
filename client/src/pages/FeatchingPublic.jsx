@@ -128,7 +128,7 @@ const PublicProducts = ({ currentUser }) => {
   };
 
   return (
-    <div className="ImageGallery2">
+    <div className="ImageGallery22">
       {products.length === 0 ? (
         <p>No products available</p>
       ) : (

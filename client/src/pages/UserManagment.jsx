@@ -10,9 +10,8 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token"); // Admin JWT token
       const res = await axios.get("http://localhost:5000/api/getall", {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Users response:", res.data);
       setUsers(res.data);
       setLoading(false);
     } catch (err) {
@@ -32,13 +31,44 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:5000/api/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       });
-      // Remove deleted user from state
-      setUsers(users.filter(user => user._id !== id));
+      setUsers(users.filter((user) => user._id !== id));
     } catch (err) {
       console.error(err);
       alert("Failed to delete user");
+    }
+  };
+
+  // Update role
+  const updateRole = async (id, newRole) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.put(
+        `http://localhost:5000/api/${id}/role`,
+        { role: newRole },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUsers(users.map((u) => (u._id === id ? res.data : u)));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update role");
+    }
+  };
+
+  // Toggle active status
+  const toggleStatus = async (id, currentStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.patch(
+        `http://localhost:5000/api/${id}/status`,
+        { isActive: !currentStatus },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setUsers(users.map((u) => (u._id === id ? res.data : u)));
+    } catch (err) {
+      console.error(err);
+      alert("Failed to update status");
     }
   };
 
@@ -53,15 +83,33 @@ const AdminUsers = () => {
             <th className="border px-2 py-1">Username</th>
             <th className="border px-2 py-1">Email</th>
             <th className="border px-2 py-1">Role</th>
+            <th className="border px-2 py-1">Active</th>
             <th className="border px-2 py-1">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user._id}>
               <td className="border px-2 py-1">{user.username}</td>
               <td className="border px-2 py-1">{user.email}</td>
-              <td className="border px-2 py-1">{user.role}</td>
+              <td className="border px-2 py-1">
+                <select
+                  value={user.role}
+                  onChange={(e) => updateRole(user._id, e.target.value)}
+                  className="border px-1 py-0.5 rounded"
+                >
+                  <option value="buyer">Buyer</option>
+                  <option value="seller">Seller</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </td>
+              <td className="border px-2 py-1">
+                <input
+                  type="checkbox"
+                  checked={user.isActive ?? true}
+                  onChange={() => toggleStatus(user._id, user.isActive ?? true)}
+                />
+              </td>
               <td className="border px-2 py-1 space-x-2">
                 <button
                   className="bg-red-500 text-white px-2 py-1 rounded"
@@ -69,7 +117,6 @@ const AdminUsers = () => {
                 >
                   Delete
                 </button>
-                {/* Optional: Add Update Role button */}
               </td>
             </tr>
           ))}
