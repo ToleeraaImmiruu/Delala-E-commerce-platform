@@ -23,7 +23,7 @@ import AdminManager from "./pages/AdminPendingList";
 import Upload from "./pages/uploadSeller";
 import FetchPublic from "./pages/FeatchingPublic";
 import SearchResults from "./pages/SearchResults";
-
+import AdminUsers from "./pages/UserManagment";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -95,6 +95,7 @@ function App() {
           }
         />
 
+
         {/* Admin dashboard */}
         <Route
           path="/admin-dashboard"
@@ -102,10 +103,12 @@ function App() {
             <ProtectedRoute role="admin">
               <AdminNavbar user={user} setUser={setUser} setToken={setToken} />
               <AdminDashboard user={user} />
-              <AdminManager/>
+              <AdminManager />
+              <AdminUsers />
             </ProtectedRoute>
           }
         />
+  
 
         {/* Seller dashboard */}
 <Route
@@ -147,4 +150,3 @@ function App() {
   );
 }
 export default App;
-     
