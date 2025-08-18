@@ -11,6 +11,8 @@ import pendingRoutes from "./routes/pendingRoutes.js";
 import adminModerationRoutes from "./routes/adminModerationRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import PublicView from "./routes/productRoutes.js";
+import Cart from "./routes/cartRoutes.js";
+import Order from "./routes/orderRoutes.js";
 
 // import Pending from "./routes/FetchRoutes.js";
 
@@ -33,6 +35,10 @@ app.use("/", dashboardRoutes);
 
 app.use("/api", pendingRoutes);
 app.use("/api", PublicView);
+
+//order and cart 
+app.use("/api", Order);
+app.use("/api", Cart);
 // app.use("/api", Pending);
 app.use("/api", adminModerationRoutes);
 // Start server

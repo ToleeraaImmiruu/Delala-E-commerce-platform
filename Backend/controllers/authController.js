@@ -1,4 +1,5 @@
 import User from "../models/userModel.js";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -38,7 +39,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+   
     // Find user by email
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
