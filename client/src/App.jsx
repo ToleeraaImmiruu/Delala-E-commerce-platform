@@ -24,6 +24,7 @@ import Upload from "./pages/uploadSeller";
 import FetchPublic from "./pages/FeatchingPublic";
 import SearchResults from "./pages/SearchResults";
 import AdminUsers from "./pages/UserManagment";
+import Cart from "./pages/Cart";
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
@@ -61,6 +62,7 @@ function App() {
           }
         />
         <Route path="/search" element={<SearchResults />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* Profile */}
         <Route
