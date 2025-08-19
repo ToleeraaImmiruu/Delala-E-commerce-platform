@@ -135,7 +135,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-         
+
         {/* Buyer dashboard */}
         <Route
           path="/buyer-dashboard"
