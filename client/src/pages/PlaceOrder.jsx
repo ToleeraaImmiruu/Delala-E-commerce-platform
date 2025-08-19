@@ -1,97 +1,98 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const Cart = () => {
-  const [cart, setCart] = useState(null);
+const PlaceOrder = () => {
+  const [cart, setCart] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
-  const [placingOrder, setPlacingOrder] = useState(false); // new state
+  const [placingOrder, setPlacingOrder] = useState(false);
 
   const token = localStorage.getItem("token");
 
-  // Fetch user cart
+  // Fetch user's cart
   const fetchCart = async () => {
+    setLoading(true);
     try {
       const res = await axios.get("http://localhost:5000/api/getCar", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCart(res.data);
-      setLoading(false);
+      setCart(res.data || { items: [], total: 0 });
     } catch (err) {
-      console.error(err);
-      setLoading(false);
+      console.error("Error fetching cart:", err);
+      alert("Failed to fetch cart");
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchCart();
   }, []);
 
-  // Remove item from cart
+  // Update quantity
+  const updateQuantity = async (carId, newQty) => {
+    if (newQty < 1) return;
+    try {
+      await axios.put(
+        `http://localhost:5000/api/updateQuantity/${carId}`,
+        { quantity: newQty },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchCart(); // refresh cart
+    } catch (err) {
+      console.error("Failed to update quantity:", err);
+      alert("Failed to update quantity");
+    }
+  };
+
+  // Remove item
   const removeItem = async (carId) => {
     try {
       await axios.delete(`http://localhost:5000/api/remove/${carId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setCart({
-        ...cart,
-        items: cart.items.filter((item) => item.car._id !== carId),
-        total: cart.items
-          .filter((item) => item.car._id !== carId)
-          .reduce((acc, i) => acc + i.price * i.quantity, 0),
-      });
+      fetchCart(); // refresh cart
     } catch (err) {
-      console.error(err);
+      console.error("Failed to remove item:", err);
+      alert("Failed to remove item");
     }
   };
 
-  // Update quantity
-  const updateQuantity = async (carId, newQty) => {
-    if (newQty < 1) return;
-    const updatedItems = cart.items.map((item) =>
-      item.car._id === carId ? { ...item, quantity: newQty } : item
-    );
-    const newTotal = updatedItems.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0
-    );
-    setCart({ ...cart, items: updatedItems, total: newTotal });
-  };
-
-  // New: Place order for all items in cart
+  // Place order
   const handlePlaceOrder = async () => {
-    if (!token) return alert("Please login to place an order!");
-    if (!cart || cart.items.length === 0) return alert("Cart is empty!");
+    if (cart.items.length === 0) {
+      alert("Cart is empty!");
+      return;
+    }
     setPlacingOrder(true);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/orders/place",
+        "http://localhost:5000/api/place",
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.order) {
         alert("Order placed successfully!");
-        setCart({ ...cart, items: [], total: 0 }); // clear cart
+        setCart({ items: [], total: 0 }); // clear cart in UI
       } else {
         alert(res.data.message || "Failed to place order");
       }
     } catch (err) {
-      console.error(err);
+      console.error("Place order error:", err);
       alert("Failed to place order");
     }
     setPlacingOrder(false);
   };
 
   if (loading) return <p className="text-center mt-10">Loading cart...</p>;
-  if (!cart || cart.items.length === 0)
+  if (cart.items.length === 0)
     return <p className="text-center mt-10">Your cart is empty.</p>;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6">Your Cart</h2>
+      <h2 className="text-3xl font-bold mb-6">Place Your Order</h2>
       <div className="bg-white shadow rounded-lg p-4">
         {cart.items.map((item) => (
           <div
-            key={item._id}
+            key={item.car._id}
             className="flex items-center justify-between border-b py-4"
           >
             <div className="flex items-center gap-4">
@@ -151,4 +152,4 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+export default PlaceOrder;

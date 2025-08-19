@@ -62,7 +62,7 @@ function App() {
           }
         />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/cart" element={<Cart />} />
+
 
         {/* Profile */}
         <Route
@@ -135,7 +135,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-
+         
         {/* Buyer dashboard */}
         <Route
           path="/buyer-dashboard"
@@ -143,6 +143,16 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <BuyerDashboard user={user} />
+            {/* <FetchPublic/> */}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute role="buyer">
+              <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
+              <Cart user={user} />
             {/* <FetchPublic/> */}
             </ProtectedRoute>
           }

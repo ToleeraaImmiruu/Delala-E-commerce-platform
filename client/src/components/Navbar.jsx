@@ -14,6 +14,11 @@ function Navbar({ onSearch }) {
   const handleLoginClick = () => {
     navigate("/login");
   };
+  
+
+  const handleCartClick = () => {
+    navigate("/cart"); // Redirect to /cart
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -79,7 +84,7 @@ function Navbar({ onSearch }) {
             Contact Us
           </a>
         </li>
-        <li className="cart" onClick={toggleMenu}>
+        <li className="cart" onClick={handleCartClick } >
           <FaShoppingCart className="cart-icon" />
         </li>
         <li>

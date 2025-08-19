@@ -202,6 +202,22 @@ margin-bottom: 7rem;
   background-color: #004080; /* Even darker on click */
 }
 
+.add-cart-btn {
+  background-color: #fdd835; /* bright yellow */
+  color: #000; /* black text for contrast */
+  padding: 1px 1px 1px 17px; /* smaller padding for compact size */
+  width: 100px; /* smaller width */
+  border-radius: 6px; /* slightly rounded */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 2rem;
+  margin-top: 1rem;
+}
+
+.add-cart-btn:hover {
+  background-color: #fbc02d; /* darker yellow on hover */
+}
 
 /* 📱 Mobile Responsive */
 @media screen and (max-width: 480px) {
