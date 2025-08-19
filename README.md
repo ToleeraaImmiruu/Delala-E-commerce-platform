@@ -1,7 +1,7 @@
 🚗 Delala.com Backend – Car Marketplace API
 
 A clean and developer-friendly Node.js + Express + MongoDB backend for the Delala.com platform.
-This project is a starter template for building car marketplace platforms (no houses included).
+This project is a starter template for building car marketplace platforms.
 
 It comes with:
 ✅ JWT Authentication (Login, Register, Logout)
