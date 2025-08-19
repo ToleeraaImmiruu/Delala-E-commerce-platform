@@ -86,7 +86,12 @@ const LandingPage = () => {
   const token = localStorage.getItem("token"); // check login status
 
   const handleRedirect = () => {
-    navigate("/login");
+if (token) {
+      navigate("/detail");
+    } else {
+      alert(`please login first!`);
+      // Here you can call your backend API to add to cart
+    }
   };
 
   const handleAddToCart = (car) => {
