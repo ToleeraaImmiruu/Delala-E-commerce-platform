@@ -4,7 +4,7 @@ import axios from "axios";
 const PlaceOrder = () => {
   const [cart, setCart] = useState({ items: [], total: 0 });
   const [loading, setLoading] = useState(true);
-  const [placingOrder, setPlacingOrder] = useState(false);
+  const [placingOrder, setPlacingOrder] = useState(null); // track which car is being ordered
 
   const token = localStorage.getItem("token");
 
@@ -27,51 +27,31 @@ const PlaceOrder = () => {
     fetchCart();
   }, []);
 
-  // Update quantity
-  const updateQuantity = async (carId, newQty) => {
-    if (newQty < 1) return;
-    try {
-      await axios.put(
-        `http://localhost:5000/api/updateQuantity/${carId}`,
-        { quantity: newQty },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      fetchCart(); // refresh cart
-    } catch (err) {
-      console.error("Failed to update quantity:", err);
-      alert("Failed to update quantity");
-    }
-  };
-
   // Remove item
   const removeItem = async (carId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/remove/${carId}`, {
+      await axios.delete(`http://localhost:5000/api/cart/remove/${carId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      fetchCart(); // refresh cart
+      fetchCart();
     } catch (err) {
       console.error("Failed to remove item:", err);
       alert("Failed to remove item");
     }
   };
 
-  // Place order
-  const handlePlaceOrder = async () => {
-    if (cart.items.length === 0) {
-      alert("Cart is empty!");
-      return;
-    }
-    setPlacingOrder(true);
+  // Place order for individual car
+  const handlePlaceOrder = async (carId, quantity, price) => {
+    setPlacingOrder(carId);
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/place",
-        {},
+        `http://localhost:5000/api/place/${carId}`,
+        { quantity, price },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (res.data.order) {
         alert("Order placed successfully!");
-        setCart({ items: [], total: 0 }); // clear cart in UI
+        fetchCart(); // refresh cart after ordering
       } else {
         alert(res.data.message || "Failed to place order");
       }
@@ -79,7 +59,7 @@ const PlaceOrder = () => {
       console.error("Place order error:", err);
       alert("Failed to place order");
     }
-    setPlacingOrder(false);
+    setPlacingOrder(null);
   };
 
   if (loading) return <p className="text-center mt-10">Loading cart...</p>;
@@ -88,7 +68,7 @@ const PlaceOrder = () => {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6">Place Your Order</h2>
+      <h2 className="text-3xl font-bold mb-6">Your Cart</h2>
       <div className="bg-white shadow rounded-lg p-4">
         {cart.items.map((item) => (
           <div
@@ -103,33 +83,24 @@ const PlaceOrder = () => {
               />
               <div>
                 <h3 className="text-lg font-semibold">{item.car.name}</h3>
-                <p className="text-gray-600">Price: {item.price} ETB</p>
+                <p className="text-gray-600">
+                  Price: {item.price} ETB × {item.quantity}
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col items-end gap-2">
               <button
-                onClick={() => updateQuantity(item.car._id, item.quantity - 1)}
-                className="bg-gray-200 px-2 rounded"
+                onClick={() => handlePlaceOrder(item.car._id, item.quantity, item.price)}
+                disabled={placingOrder === item.car._id}
+                className="bg-green-500 text-white px-4 py-1 rounded"
               >
-                -
+                {placingOrder === item.car._id ? "Placing..." : "Place Order"}
               </button>
-              <span>{item.quantity}</span>
-              <button
-                onClick={() => updateQuantity(item.car._id, item.quantity + 1)}
-                className="bg-gray-200 px-2 rounded"
-              >
-                +
-              </button>
-            </div>
 
-            <div>
-              <p className="font-semibold">
-                Total: {item.price * item.quantity} ETB
-              </p>
               <button
                 onClick={() => removeItem(item.car._id)}
-                className="mt-2 bg-red-500 text-white px-3 py-1 rounded"
+                className="bg-red-500 text-white px-3 py-1 rounded"
               >
                 Remove
               </button>
@@ -139,13 +110,6 @@ const PlaceOrder = () => {
 
         <div className="text-right mt-6">
           <p className="text-2xl font-bold">Grand Total: {cart.total} ETB</p>
-          <button
-            onClick={handlePlaceOrder}
-            disabled={placingOrder}
-            className="mt-3 bg-green-500 text-white px-6 py-2 rounded"
-          >
-            {placingOrder ? "Placing Order..." : "Place Order"}
-          </button>
         </div>
       </div>
     </div>
