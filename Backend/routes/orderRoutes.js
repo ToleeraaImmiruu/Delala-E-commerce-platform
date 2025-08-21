@@ -6,37 +6,26 @@ import verifyToken from "../middleware/authoMiddleware.js";
 const router = express.Router();
 
 // 🛒 Place order from cart
-router.post("/place", verifyToken, async (req, res) => {
-  try {
-    const cart = await Cart.findOne({ user: req.user.id }).populate("items.car");
-    if (!cart || cart.items.length === 0) return res.status(400).json({ message: "Cart is empty" });
+// routes/order.js
+router.post("/place/:carId", verifyToken, async (req, res) => {
+  const { carId } = req.params;
+  const { quantity } = req.body;
+  const car = await Car.findById(carId).populate("seller");
+  if (!car) return res.status(404).json({ message: "Car not found" });
 
-    const orderItems = cart.items.map(item => ({
-      car: item.car._id,
-      quantity: item.quantity,
-      price: item.price,
-    }));
+  const order = new Order({
+    buyer: req.user.id,
+    seller: car.seller._id,
+    car: car._id,
+    quantity: quantity || 1,
+    price: car.price,
+    total: car.price * (quantity || 1),
+  });
 
-    const total = cart.items.reduce((acc, i) => acc + i.price * i.quantity, 0);
-
-    const order = new Order({
-      buyer: req.user.id,
-      items: orderItems,
-      total,
-    });
-
-    await order.save();
-
-    // Clear the cart after placing order
-    cart.items = [];
-    cart.total = 0;
-    await cart.save();
-
-    res.json({ message: "Order placed successfully", order });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  await order.save();
+  res.json({ message: "Order placed successfully", order });
 });
+
 
 // 📦 Get orders for current user
 router.get("/myOrders", verifyToken, async (req, res) => {
