@@ -3,10 +3,12 @@ import axios from "axios";
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true); // new loading state
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOrders = async () => {
+      setLoading(true);
       try {
         const res = await axios.get("http://localhost:5000/api/myOrders", {
           headers: { Authorization: `Bearer ${token}` },
@@ -14,10 +16,21 @@ const MyOrders = () => {
         setOrders(res.data.orders || []);
       } catch (err) {
         console.error("Failed to fetch orders", err);
+        alert("Failed to fetch orders");
       }
+      setLoading(false);
     };
     fetchOrders();
   }, [token]);
+
+  // 🔹 Show spinner while loading
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10">
@@ -32,7 +45,7 @@ const MyOrders = () => {
               <p><strong>Status:</strong> {order.status}</p>
               <p><strong>Total:</strong> {order.total} ETB</p>
               <ul className="ml-4 list-disc">
-                {order.items.map((i) => (
+            {order.items.map((i) => (
   <li key={i._id}>{i.car?.name} (x{i.quantity})</li>
 ))}
 
@@ -57,13 +70,12 @@ const UpdateOrderStatus = ({ orderId, currentStatus }) => {
       await axios.put(
         `http://localhost:5000/api/updateStatus/${orderId}`,
         { status },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Status updated!");
     } catch (err) {
       console.error("Failed to update status", err);
+      alert("Failed to update status");
     }
   };
 
@@ -74,11 +86,10 @@ const UpdateOrderStatus = ({ orderId, currentStatus }) => {
         onChange={(e) => setStatus(e.target.value)}
         className="border px-2 py-1 rounded"
       >
-        <option value="pending">Pending</option>
-        <option value="confirmed">Confirmed</option>
-        <option value="shipped">Shipped</option>
-        <option value="completed">Completed</option>
-        <option value="cancelled">Cancelled</option>
+        <option value="Pending">Pending</option>
+        <option value="Confirmed">Confirmed</option>
+        <option value="Shipped">Shipped</option>
+        <option value="cancelled">cancelled</option>
       </select>
       <button
         onClick={handleUpdate}
