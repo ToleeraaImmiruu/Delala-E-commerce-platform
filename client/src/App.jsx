@@ -27,6 +27,8 @@ import AdminUsers from "./pages/UserManagment";
 import Cart from "./pages/Cart";
 import Details from "./pages/CarDetailsPage";
 
+import Orders from "./pages/PlaceOrder";
+
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
@@ -145,6 +147,16 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <BuyerDashboard user={user} />
+            {/* <FetchPublic/> */}
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/myOrders"
+          element={
+            <ProtectedRoute role="buyer">
+              <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
+              <Orders user={user} />
             {/* <FetchPublic/> */}
             </ProtectedRoute>
           }

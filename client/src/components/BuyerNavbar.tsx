@@ -24,7 +24,7 @@ const BuyerNavbar = ({ user, setUser, setToken }) => {
         <Link to="/" className="hover:text-blue-500">
           Home
         </Link>
-        <Link to="/orders" className="hover:text-blue-500">
+        <Link to="/myOrders" className="hover:text-blue-500">
           Orders
         </Link>
         <Link to="/profile" className="hover:text-blue-500">
