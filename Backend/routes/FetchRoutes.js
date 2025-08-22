@@ -1,5 +1,5 @@
 // Get all pending products (admin only)
-export default router.get("/pending", verifyToke, async (req, res) => {
+export default router.get("/pending1", verifyToke, async (req, res) => {
   try {
     // You can also check if req.user.role === 'admin' here
     const pending = await PendingProduct.find({ status: "pending" });

@@ -4,7 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 
-import authRoutes from "./routes/authRoute.js";
+
 import uploadRoutes from './routes/uploadRoutes.js';
 import userRouter from './routes/userRouter.js'
 import pendingRoutes from "./routes/pendingRoutes.js";
@@ -13,6 +13,8 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import PublicView from "./routes/productRoutes.js";
 import Cart from "./routes/cartRoutes.js";
 import Order from "./routes/orderRoutes.js";
+import authRoutes from "./routes/authRoute.js";
+import Chat from "./routes/ChatRoute.js";
 
 // import Pending from "./routes/FetchRoutes.js";
 
@@ -39,6 +41,7 @@ app.use("/api", PublicView);
 //order and cart 
 app.use("/api", Order);
 app.use("/api", Cart);
+// app.use("/api", Chat);
 // app.use("/api", Pending);
 app.use("/api", adminModerationRoutes);
 // Start server
