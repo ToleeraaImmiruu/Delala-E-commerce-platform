@@ -174,17 +174,73 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+/* Mobile Small Screens (480px and below) */
+@media (max-width: 480px) {
+  .about-container {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+
+  .hero-section {
+    padding: 40px 15px 30px;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1rem;
+    max-width: 100%;
+  }
+
   .mission-vision-section {
-    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    padding: 20px 15px;
+  }
+
+  .card h2 {
+    font-size: 1.5rem;
+  }
+
+  .how-it-works-section {
+    padding: 30px 15px;
+  }
+
+  .section-title {
+    font-size: 2rem;
+    margin-bottom: 30px;
   }
 
   .steps-grid {
-    flex-direction: column;
+    gap: 20px;
   }
 
-  .card,
   .step-card {
-    flex: 1 1 100%;
+    padding: 20px 15px;
+  }
+
+  .step-icon {
+    font-size: 2.5rem;
+  }
+
+  .step-card h3 {
+    font-size: 1.2rem;
+  }
+
+  .step-card p {
+    font-size: 0.9rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.6rem;
+  }
+
+  .cta-button {
+    padding: 12px 30px;
+    font-size: 1rem;
   }
 }

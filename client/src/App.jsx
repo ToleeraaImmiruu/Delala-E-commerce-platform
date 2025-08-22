@@ -26,6 +26,8 @@ import SearchResults from "./pages/SearchResults";
 import AdminUsers from "./pages/UserManagment";
 import Cart from "./pages/Cart";
 import Details from "./pages/CarDetailsPage";
+import Chat from "./pages/Chat";
+
 
 import Orders from "./pages/PlaceOrder";
 
@@ -66,6 +68,7 @@ function App() {
         />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/detail" element={<Details />} />
+        <Route path="/chat" element={<Chat />} />
 
 
         {/* Profile */}

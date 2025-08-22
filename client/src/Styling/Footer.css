@@ -78,8 +78,44 @@
 }
 
 /* Responsive */
-@media (max-width: 768px) {
+/* Mobile Small Screens (480px and below) */
+@media (max-width: 480px) {
+  .footer {
+    padding: 30px 15px 15px;
+  }
+
   .footer-container {
-    text-align: center;
+    gap: 20px;
+  }
+
+  .footer-logo {
+    font-size: 1.5rem;
+    justify-content: center;
+  }
+
+  .footer-section h3 {
+    font-size: 1rem;
+  }
+
+  .footer-section ul li {
+    font-size: 0.9rem;
+  }
+
+  .footer-section p {
+    font-size: 0.9rem;
+  }
+
+  .social-icons {
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .social-icons a {
+    padding: 8px;
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem;
+    padding-top: 10px;
   }
 }

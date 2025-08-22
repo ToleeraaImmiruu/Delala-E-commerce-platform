@@ -261,4 +261,77 @@ margin-bottom: 7rem;
     padding: 12px; /* Taller button for touch */
     border-radius: 6px;
   }
+  .HomePage {
+    height: auto; /* prevent huge empty space */
+  }
+
+  .LandingPage {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .LandingText {
+    margin: 0;
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .LandingText h1 {
+    font-size: 1.6rem;
+  }
+
+  .LandingSpan {
+    font-size: 1rem;
+  }
+
+  .LandingImage {
+    width: 100%;
+    margin: 15px 0 0 0;
+    height: auto;
+  }
+
+  .ImageGallery,
+  .ImageGallery22 {
+    grid-template-columns: 1fr; /* single column on phones */
+    padding: 15px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .CarCard,
+  .CarCard2 {
+    margin: 1rem auto;
+    width: 100%;
+    height: auto; /* flexible height */
+  }
+
+  .GalleryImage,
+  .GalleryImage2 {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .CarDetails,
+  .CarDetails2 {
+    margin-left: 0;
+    padding: 0 10px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  .add-cart-btn {
+    width: 100%;
+    margin: 10px 0;
+    font-size: 14px;
+    padding: 10px;
+  }
 }

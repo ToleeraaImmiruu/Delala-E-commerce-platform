@@ -26,8 +26,7 @@ const AdminDashboard = () => {
   }, []);
 
   const approveProduct = async (id) => {
-    if (!window.confirm("Are you sure you want to approve this product?")) return;
-
+    if (!window.confirm("Approve this product?")) return;
     try {
       const res = await fetch(`http://localhost:5000/api/approve-product/${id}`, {
         method: "POST",
@@ -39,10 +38,9 @@ const AdminDashboard = () => {
       const data = await res.json();
       if (data.success) {
         alert("✅ Product approved");
-        // Remove from frontend list instantly
         setPendingProducts((prev) => prev.filter((p) => p._id !== id));
       } else {
-        alert(`❌ Failed to approve product: ${data.message}`);
+        alert(`❌ Failed: ${data.message}`);
       }
     } catch (err) {
       console.error("Approve error:", err);
@@ -50,8 +48,7 @@ const AdminDashboard = () => {
   };
 
   const rejectProduct = async (id) => {
-    if (!window.confirm("Are you sure you want to reject this product?")) return;
-
+    if (!window.confirm("Reject this product?")) return;
     try {
       const res = await fetch(`http://localhost:5000/api/reject-product/${id}`, {
         method: "POST",
@@ -59,78 +56,90 @@ const AdminDashboard = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ notes: "Rejected by admin" }), // optional notes
+        body: JSON.stringify({ notes: "Rejected by admin" }),
       });
       const data = await res.json();
       if (data.success) {
         alert("❌ Product rejected");
-        // Remove from frontend list instantly
         setPendingProducts((prev) => prev.filter((p) => p._id !== id));
       } else {
-        alert(`❌ Failed to reject product: ${data.message}`);
+        alert(`❌ Failed: ${data.message}`);
       }
     } catch (err) {
       console.error("Reject error:", err);
     }
   };
 
-  if (loading) return <p>Loading pending products...</p>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">Pending Listings</h2>
+    <div className="max-w-7xl mx-auto p-4 sm:p-6">
+      <h2 className="text-2xl font-bold mb-6 text-gray-800">📋 Pending Listings</h2>
 
       {pendingProducts.length === 0 ? (
-        <p>No pending products.</p>
+        <p className="text-gray-500">No pending products.</p>
       ) : (
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Price</th>
-              <th className="border p-2">Location</th>
-              <th className="border p-2">Type</th>
-              <th className="border p-2">Images</th>
-              <th className="border p-2">Status</th>
-              <th className="border p-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pendingProducts.map((product) => (
-              <tr key={product._id}>
-                <td className="border p-2">{product.name}</td>
-                <td className="border p-2">${product.price}</td>
-                <td className="border p-2">{product.location}</td>
-                <td className="border p-2">{product.type}</td>
-                <td className="border p-2 flex gap-2">
-                  {product.images?.map((img) => (
-                    <img
-                      key={img._id}
-                      src={img.url}
-                      alt={product.name}
-                      className="w-20 h-16 object-cover border"
-                    />
-                  ))}
-                </td>
-                <td className="border p-2">{product.status}</td>
-                <td className="border p-2 flex gap-2">
-                  <button
-                    onClick={() => approveProduct(product._id)}
-                    className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                  >
-                    Approve
-                  </button>
-                  <button
-                    onClick={() => rejectProduct(product._id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                  >
-                    Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          {pendingProducts.map((product) => (
+            <div
+              key={product._id}
+              className="bg-white rounded-lg shadow-md p-4 flex flex-col sm:flex-row sm:items-center sm:gap-4"
+            >
+              <div className="flex-shrink-0">
+                {product.images?.[0] ? (
+                  <img
+                    src={product.images[0].url}
+                    alt={product.name}
+                    className="w-full sm:w-24 h-24 object-cover rounded border"
+                  />
+                ) : (
+                  <div className="w-full sm:w-24 h-24 bg-gray-100 flex items-center justify-center rounded border">
+                    No Image
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 mt-2 sm:mt-0">
+                <h3 className="text-lg font-semibold">{product.name}</h3>
+                <p className="text-green-600 font-bold">${product.price}</p>
+                <p className="text-gray-600 text-sm">
+                  Location: {product.location}
+                </p>
+                <p className="text-gray-600 text-sm">Type: {product.type}</p>
+                <p
+                  className={`inline-block mt-1 px-2 py-1 rounded text-xs font-semibold ${
+                    product.status === "pending"
+                      ? "bg-yellow-100 text-yellow-700"
+                      : product.status === "approved"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {product.status}
+                </p>
+              </div>
+              <div className="flex gap-2 mt-3 sm:mt-0 sm:flex-col sm:justify-center">
+                <button
+                  onClick={() => approveProduct(product._id)}
+                  className="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 w-full sm:w-auto"
+                >
+                  Approve
+                </button>
+                <button
+                  onClick={() => rejectProduct(product._id)}
+                  className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 w-full sm:w-auto"
+                >
+                  Reject
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
