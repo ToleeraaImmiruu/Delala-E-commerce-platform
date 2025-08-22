@@ -1,18 +1,17 @@
+// models/Order.js
 import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema({
-  buyer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   items: [
     {
-      car: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+      car: { type: mongoose.Schema.Types.ObjectId, ref: "Car", required: true },
       quantity: { type: Number, required: true },
-      price: { type: Number, required: true },
-    },
+      price: { type: Number, required: true }
+    }
   ],
   total: { type: Number, required: true },
-  status: { type: String, default: "pending" }, // pending, confirmed, delivered
+  status: { type: String, enum: ["Pending", "Confirmed", "Shipped", "Delivered"], default: "Pending" }
 }, { timestamps: true });
 
-const Order = mongoose.model("Order", orderSchema);
-
-export default Order;
+export default mongoose.model("Order", orderSchema);
