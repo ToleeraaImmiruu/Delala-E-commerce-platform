@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Styling/Services.css';
+import '../Styling/services.css';
 const Data = [
   {
     id: 1,
