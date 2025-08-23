@@ -1,9 +1,6 @@
-/* global process */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styling/Register.css";
-
-const API_URL = process.env.REACT_APP_API_URL; // backend URL
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -12,7 +9,7 @@ const RegisterPage = () => {
     username: "",
     email: "",
     password: "",
-    role: "buyer",
+    role: "buyer", // default role
   });
 
   const [errors, setErrors] = useState({
@@ -46,14 +43,18 @@ const RegisterPage = () => {
     e.preventDefault();
     if (!validate()) return;
 
+    console.log("Sending to backend:", formData); // Log the data
+
     try {
-      const res = await fetch(`${API_URL}/api/auth/register`, {
+      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(formData), // send role too
       });
 
       const data = await res.json();
+      console.log("Response from backend:", data); // Log response
+
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
       alert("Registration successful! Redirecting to login...");
@@ -105,6 +106,7 @@ const RegisterPage = () => {
         />
         {errors.password && <small className="error-msg">{errors.password}</small>}
 
+        {/* Role Selection */}
         <label>Role</label>
         <select
           name="role"
