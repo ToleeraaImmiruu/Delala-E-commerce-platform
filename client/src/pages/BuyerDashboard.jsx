@@ -1,5 +1,3 @@
-/* global process */
-
 import React, { useEffect, useState } from "react";
 import "../Styling/BuyerDashboard.css"; // external CSS
 
@@ -9,7 +7,6 @@ const PublicProducts = () => {
   const [cartLoading, setCartLoading] = useState(false);
 
   const token = localStorage.getItem("token"); // for authenticated requests
-  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchProducts();
@@ -18,7 +15,7 @@ const PublicProducts = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/public`);
+      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/public");
       const data = await res.json();
       if (data.success) setProducts(data.products);
     } catch (err) {
@@ -34,7 +31,7 @@ const PublicProducts = () => {
     }
     setCartLoading(true);
     try {
-      const res = await fetch(`${API_URL}/api/add`, {
+      const res = await fetch("https://delala-e-commerce-backend.onrender.comapi/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,12 +62,12 @@ const PublicProducts = () => {
     borderRadius: "5px",
     cursor: "pointer",
     fontWeight: "bold",
-    width: "120px",
+    width: "120px", // smaller width
     transition: "all 0.3s ease",
   };
 
-  const viewButtonStyle = { ...buttonBaseStyle, backgroundColor: "#1976d2", color: "#fff" };
-  const addCartButtonStyle = { ...buttonBaseStyle, backgroundColor: "#ff9800", color: "#fff" };
+  const viewButtonStyle = { ...buttonBaseStyle, backgroundColor: "#1976d2", color: "#fff" }; // blue
+  const addCartButtonStyle = { ...buttonBaseStyle, backgroundColor: "#ff9800", color: "#fff" }; // orange
 
   return (
     <div className="ImageGallery22">
