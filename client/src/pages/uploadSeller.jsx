@@ -1,3 +1,4 @@
+/* global process */
 import { useState } from "react";
 
 export default function SellerUploadForm() {
@@ -19,28 +20,28 @@ export default function SellerUploadForm() {
     for (const file of files) fd.append("products", file);
 
     try {
-     const res = await fetch("http://localhost:5000/api/pending-products", {
-  method: "POST",
-  headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  body: fd
-});
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/api/pending-products`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        body: fd
+      });
 
-let data;
-try {
-  data = await res.json();
-} catch {
-  setMsg("❌ Server returned invalid response");
-  setStatus("error");
-  return;
-}
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        setMsg("❌ Server returned invalid response");
+        setStatus("error");
+        return;
+      }
 
-if (data.success) {
-  setMsg("✅ Submitted successfully. Waiting for admin approval.");
-  setStatus("success");
-} else {
-  setMsg(`❌ ${data.message || "Submission failed"}`);
-  setStatus("error");
-}
+      if (data.success) {
+        setMsg("✅ Submitted successfully. Waiting for admin approval.");
+        setStatus("success");
+      } else {
+        setMsg(`❌ ${data.message || "Submission failed"}`);
+        setStatus("error");
+      }
 
     } catch (error) {
       setMsg(`❌ Server error: ${error.message}`);

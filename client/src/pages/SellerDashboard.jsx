@@ -1,53 +1,78 @@
+/* global process */
 import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-const SellerDashboard = ({ user }) => {
-  const [dashboardData, setDashboardData] = useState(null);
+const API_URL = process.env.REACT_APP_API_URL; // production-ready backend URL
+
+const SearchResults = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const query = new URLSearchParams(location.search).get("q");
+
   useEffect(() => {
-    const fetchSellerDashboard = async () => {
-      const token = localStorage.getItem("token"); // get stored token
-      if (!token) return alert("You must be logged in");
+    if (query) fetchSearchResults(query);
+  }, [query]);
 
-      try {
-        const res = await fetch("http://localhost:5000/seller-dashboard", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`, // send token
-          },
-        });
+  const fetchSearchResults = async (q) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_URL}/api/search?q=${q}`);
+      const data = await res.json();
+      setProducts(data.products || []); // ensure consistent structure
+    } catch (err) {
+      console.error("Search fetch error:", err);
+    }
+    setLoading(false);
+  };
 
-        const data = await res.json();
-
-        if (!res.ok) throw new Error(data.error || "Failed to fetch dashboard");
-
-        setDashboardData(data); // save data to state
-      } catch (err) {
-        console.error(err.message);
-        alert(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSellerDashboard();
-  }, []);
-
-  if (loading) return <p>Loading dashboard...</p>;
+  if (loading) return <p>Loading search results...</p>;
+  if (!products || products.length === 0)
+    return <p>No results found for "{query}"</p>;
 
   return (
-    <div className="dashboard-container">
-      <h2 className="text-center t-20px">Seller Dashboard</h2>
-      {dashboardData ? (
-        <div>
-          <p>{dashboardData.message}</p>
-        </div>
-      ) : (
-        <p>No data available</p>
-      )}
+    <div className="p-4">
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          margin: "10px 0",
+          padding: "8px 16px",
+          backgroundColor: "#28a745",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+        }}
+      >
+        ⬅ Back
+      </button>
+
+      <h2 className="mb-4">Search results for "{query}"</h2>
+      <div className="ImageGallery22 relative top-15 flex flex-wrap gap-4">
+        {products.map((product) => (
+          <div
+            key={product._id}
+            className="CarCard2 relative left-0 flex flex-col items-center p-2 border rounded"
+          >
+            {product.images && product.images.length > 0 && (
+              <img
+                src={product.images[0]}
+                alt={product.name}
+                style={{ width: "250px", borderRadius: "6px" }}
+              />
+            )}
+            <h3 className="mt-2">{product.name}</h3>
+            <p>Price: ${product.price}</p>
+            <p>Location: {product.location}</p>
+            <p>Type: {product.type}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
 
-export default SellerDashboard;
+export default SearchResults;

@@ -1,3 +1,5 @@
+/* global process */
+
 import React, { useEffect, useState } from "react";
 
 const AdminDashboard = () => {
@@ -5,10 +7,12 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const fetchPendingProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/pending", {
+      const res = await fetch(`${API_URL}/api/pending`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -28,7 +32,7 @@ const AdminDashboard = () => {
   const approveProduct = async (id) => {
     if (!window.confirm("Approve this product?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/approve-product/${id}`, {
+      const res = await fetch(`${API_URL}/api/approve-product/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +54,7 @@ const AdminDashboard = () => {
   const rejectProduct = async (id) => {
     if (!window.confirm("Reject this product?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/reject-product/${id}`, {
+      const res = await fetch(`${API_URL}/api/reject-product/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

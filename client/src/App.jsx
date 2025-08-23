@@ -114,6 +114,7 @@ function App() {
               <AdminDashboard user={user} />
               <AdminManager />
               <AdminUsers />
+              <Footer />
             </ProtectedRoute>
           }
         />
@@ -128,6 +129,7 @@ function App() {
       <SellerDashboard user={user} />
       {/* Pass currentUser prop here */}
       <FetchPublic currentUser={user} />
+    <Footer />
     </ProtectedRoute>
   }
 />
@@ -138,7 +140,8 @@ function App() {
             <ProtectedRoute role="seller">
               <SellerNavbar user={user} setUser={setUser} setToken={setToken} />
                   
-              <Upload  user={user}/>
+              <Upload user={user} />
+              <Footer />
             </ProtectedRoute>
           }
         />
@@ -150,7 +153,7 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <BuyerDashboard user={user} />
-            {/* <FetchPublic/> */}
+          <Footer />
             </ProtectedRoute>
           }
         />
@@ -160,7 +163,7 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <Orders user={user} />
-            {/* <FetchPublic/> */}
+             <Footer />
             </ProtectedRoute>
           }
         />
@@ -170,7 +173,7 @@ function App() {
             <ProtectedRoute role="buyer">
               <BuyerNavbar user={user} setUser={setUser} setToken={setToken} />
               <Cart user={user} />
-            {/* <FetchPublic/> */}
+            <Footer />
             </ProtectedRoute>
           }
         />

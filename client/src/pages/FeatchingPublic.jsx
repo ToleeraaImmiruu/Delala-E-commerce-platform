@@ -1,3 +1,4 @@
+/* global process */
 import React, { useEffect, useState } from "react";
 import "../Styling/BuyerDashboard.css";
 
@@ -8,6 +9,7 @@ const PublicProducts = ({ currentUser }) => {
   const [editData, setEditData] = useState({ name: "", price: "", location: "", type: "", images: [] });
 
   const token = localStorage.getItem("token");
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     fetchProducts();
@@ -15,7 +17,7 @@ const PublicProducts = ({ currentUser }) => {
 
   const fetchProducts = () => {
     setLoading(true);
-    fetch("http://localhost:5000/api/public", {
+    fetch(`${API_URL}/api/public`, {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((res) => res.json())
@@ -33,7 +35,7 @@ const PublicProducts = ({ currentUser }) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/delete1/${id}`, {
+      const res = await fetch(`${API_URL}/api/delete1/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -68,7 +70,7 @@ const PublicProducts = ({ currentUser }) => {
 
   const handleEditSubmit = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/edit1/${id}`, {
+      const res = await fetch(`${API_URL}/api/edit1/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -103,29 +105,10 @@ const PublicProducts = ({ currentUser }) => {
     transition: "all 0.3s ease",
   };
 
-  const editButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-  };
-
-  const deleteButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f44336",
-    color: "#fff",
-  };
-
-  const saveButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#2196F3",
-    color: "#fff",
-  };
-
-  const cancelButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#777",
-    color: "#fff",
-  };
+  const editButtonStyle = { ...buttonStyle, backgroundColor: "#4CAF50", color: "#fff" };
+  const deleteButtonStyle = { ...buttonStyle, backgroundColor: "#f44336", color: "#fff" };
+  const saveButtonStyle = { ...buttonStyle, backgroundColor: "#2196F3", color: "#fff" };
+  const cancelButtonStyle = { ...buttonStyle, backgroundColor: "#777", color: "#fff" };
 
   return (
     <div className="ImageGallery22">
@@ -141,34 +124,10 @@ const PublicProducts = ({ currentUser }) => {
             <div className="CarDetails2">
               {editingId === product._id ? (
                 <div className="EditForm">
-                  <input
-                    type="text"
-                    name="name"
-                    value={editData.name}
-                    onChange={handleEditChange}
-                    placeholder="Name"
-                  />
-                  <input
-                    type="number"
-                    name="price"
-                    value={editData.price}
-                    onChange={handleEditChange}
-                    placeholder="Price"
-                  />
-                  <input
-                    type="text"
-                    name="location"
-                    value={editData.location}
-                    onChange={handleEditChange}
-                    placeholder="Location"
-                  />
-                  <input
-                    type="text"
-                    name="type"
-                    value={editData.type}
-                    onChange={handleEditChange}
-                    placeholder="Type"
-                  />
+                  <input type="text" name="name" value={editData.name} onChange={handleEditChange} placeholder="Name" />
+                  <input type="number" name="price" value={editData.price} onChange={handleEditChange} placeholder="Price" />
+                  <input type="text" name="location" value={editData.location} onChange={handleEditChange} placeholder="Location" />
+                  <input type="text" name="type" value={editData.type} onChange={handleEditChange} placeholder="Type" />
                   <button style={saveButtonStyle} onClick={() => handleEditSubmit(product._id)}>Save</button>
                   <button style={cancelButtonStyle} onClick={() => setEditingId(null)}>Cancel</button>
                 </div>
@@ -178,7 +137,7 @@ const PublicProducts = ({ currentUser }) => {
                   <p><strong>Price:</strong> ${product.price}</p>
                   <p><strong>Location:</strong> {product.location}</p>
                   <p><strong>Type:</strong> {product.type}</p>
-                  <button style={{ ...buttonStyle, backgroundColor: "#ff9800", color: "#fff"  }}>View Details</button>
+                  <button style={{ ...buttonStyle, backgroundColor: "#ff9800", color: "#fff" }}>View Details</button>
 
                   {/* Edit/Delete buttons for the seller */}
                   {currentUser && String(product.sellerId) === String(currentUser.id || currentUser._id) && (

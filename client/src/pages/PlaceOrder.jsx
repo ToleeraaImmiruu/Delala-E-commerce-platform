@@ -1,16 +1,19 @@
+/* global process */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL = process.env.REACT_APP_API_URL; // use deployed backend
+
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true); // new loading state
+  const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOrders = async () => {
       setLoading(true);
       try {
-        const res = await axios.get("http://localhost:5000/api/myOrders", {
+        const res = await axios.get(`${API_URL}/api/myOrders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(res.data.orders || []);
@@ -23,7 +26,6 @@ const MyOrders = () => {
     fetchOrders();
   }, [token]);
 
-  // 🔹 Show spinner while loading
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -45,13 +47,11 @@ const MyOrders = () => {
               <p><strong>Status:</strong> {order.status}</p>
               <p><strong>Total:</strong> {order.total} ETB</p>
               <ul className="ml-4 list-disc">
-            {order.items.map((i) => (
-  <li key={i._id}>{i.car?.name} (x{i.quantity})</li>
-))}
-
+                {order.items.map((i) => (
+                  <li key={i._id}>{i.car?.name} (x{i.quantity})</li>
+                ))}
               </ul>
 
-              {/* Update status (admin only) */}
               <UpdateOrderStatus orderId={order._id} currentStatus={order.status} />
             </div>
           ))}
@@ -68,7 +68,7 @@ const UpdateOrderStatus = ({ orderId, currentStatus }) => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/updateStatus/${orderId}`,
+        `${API_URL}/api/updateStatus/${orderId}`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -89,7 +89,7 @@ const UpdateOrderStatus = ({ orderId, currentStatus }) => {
         <option value="Pending">Pending</option>
         <option value="Confirmed">Confirmed</option>
         <option value="Shipped">Shipped</option>
-        <option value="cancelled">cancelled</option>
+        <option value="Cancelled">Cancelled</option>
       </select>
       <button
         onClick={handleUpdate}
@@ -100,6 +100,5 @@ const UpdateOrderStatus = ({ orderId, currentStatus }) => {
     </div>
   );
 };
-
 
 export default MyOrders;
