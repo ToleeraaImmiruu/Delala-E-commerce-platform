@@ -21,23 +21,6 @@ This project is a starter template for building car marketplace platforms focuse
 
 ✅ Ready to connect with frontend at http://localhost:5173
 
-📂 Project Structure
-delala-backend/
-├── index.js              # Server entry point
-├── config/               # DB + Cloudinary configurations
-├── models/               # Mongoose schemas
-│   ├── Car.js
-│   └── User.js
-├── routes/               # API routes
-│   ├── authRoutes.js
-│   └── carRoutes.js
-├── controllers/          # Business logic
-│   ├── authController.js
-│   └── carController.js
-├── middleware/           # Auth middlewares
-├── .env                  # Environment variables
-└── package.json
-
 ⚙️ Installation
 
 1️⃣ Clone the repository
