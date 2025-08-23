@@ -45,7 +45,7 @@ app.use("/api", Cart);
 // app.use("/api", Pending);
 app.use("/api", adminModerationRoutes);
 // Start server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT  || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
