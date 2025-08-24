@@ -9,7 +9,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token"); // Admin JWT token
-      const res = await axios.get("http://localhost:5000/api/getall", {
+      const res = await axios.get("https://delala-e-commerce-backend.onrender.com/api/getall", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
