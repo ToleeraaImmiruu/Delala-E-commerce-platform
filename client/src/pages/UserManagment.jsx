@@ -1,4 +1,3 @@
-/* global process */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -6,14 +5,11 @@ const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Base URL from .env
-  const API_URL = process.env.REACT_APP_API_URL;
-
   // Fetch all users
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("token"); // Admin JWT token
-      const res = await axios.get(`${API_URL}/api/getall`, {
+      const res = await axios.get("http://localhost:5000/api/getall", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -34,7 +30,7 @@ const AdminUsers = () => {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API_URL}/api/${id}`, {
+      await axios.delete(`https://delala-e-commerce-backend.onrender.com/api/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(users.filter((user) => user._id !== id));
@@ -49,7 +45,7 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        `${API_URL}/api/${id}/role`,
+        `https://delala-e-commerce-backend.onrender.com/api/${id}/role`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -65,7 +61,7 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.patch(
-        `${API_URL}/api/${id}/status`,
+        `https://delala-e-commerce-backend.onrender.com/api/${id}/status`,
         { isActive: !currentStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
