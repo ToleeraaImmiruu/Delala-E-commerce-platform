@@ -1,4 +1,3 @@
-/* global process */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -8,13 +7,12 @@ const Cart = () => {
   const [placingOrder, setPlacingOrder] = useState(null); // track which item is being ordered
 
   const token = localStorage.getItem("token");
-  const API_URL = process.env.REACT_APP_API_URL;
 
   // Fetch user cart
   const fetchCart = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${API_URL}/api/getcar`, {
+      const res = await axios.get("https://delala-e-commerce-backend.onrender.com/api/getcar", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCart(res.data || { items: [], total: 0 });
@@ -32,7 +30,7 @@ const Cart = () => {
   // Remove item from cart
   const removeItem = async (carId) => {
     try {
-      await axios.delete(`${API_URL}/api/remove/${carId}`, {
+      await axios.delete(`https://delala-e-commerce-backend.onrender.com/api/remove/${carId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const updatedItems = cart.items.filter((item) => item.car._id !== carId);
@@ -51,7 +49,7 @@ const Cart = () => {
     if (newQty < 1) return;
     try {
       await axios.put(
-        `${API_URL}/api/updateQuantity/${carId}`,
+        `https://delala-e-commerce-backend.onrender.com/api/updateQuantity/${carId}`,
         { quantity: newQty },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -73,7 +71,7 @@ const Cart = () => {
     setPlacingOrder(carId);
     try {
       const res = await axios.post(
-        `${API_URL}/api/place/${carId}`,
+        `https://delala-e-commerce-backend.onrender.com/api/place/${carId}`,
         { quantity, price },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -173,8 +171,14 @@ const Cart = () => {
           <p className="text-2xl font-bold">Grand Total: {cart.total} ETB</p>
         </div>
       </div>
+
+
     </div>
   );
 };
+
+/* 🔽 Extra components for MyOrders & UpdateStatus 🔽 */
+
+
 
 export default Cart;
