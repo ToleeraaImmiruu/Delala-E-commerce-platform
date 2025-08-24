@@ -1,4 +1,3 @@
-/* global process */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -10,14 +9,13 @@ const ChatPage = ({ carId }) => {
   const [isOpen, setIsOpen] = useState(false); // chat window toggle
 
   const token = localStorage.getItem("token");
-  const API_URL = process.env.REACT_APP_API_URL;
 
   // Start or get chat
   const startChat = async () => {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${API_URL}/api/chats/start`,
+        "https://delala-e-commerce-backend.onrender.com/api/chats/start",
         { carId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -35,7 +33,7 @@ const ChatPage = ({ carId }) => {
   const fetchMessages = async (chatId) => {
     try {
       const res = await axios.get(
-        `${API_URL}/api/chats/${chatId}`,
+        `https://delala-e-commerce-backend.onrender.com/api/chats/${chatId}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setMessages(res.data);
@@ -49,7 +47,7 @@ const ChatPage = ({ carId }) => {
     if (!newMessage.trim() || !chat) return;
     try {
       const res = await axios.post(
-        `${API_URL}/api/chats/send`,
+        "https://delala-e-commerce-backend.onrender.com/api/chats/send",
         { chatId: chat._id, text: newMessage },
         { headers: { Authorization: `Bearer ${token}` } }
       );
