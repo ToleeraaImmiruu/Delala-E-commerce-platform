@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styling/Login.css";
+
 interface LoginForm {
   email: string;
   password: string;
@@ -19,7 +20,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
   });
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const [backendError, setBackendError] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // 👈 added
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,7 +45,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
     e.preventDefault();
     if (!validate()) return;
 
-    setLoading(true); // 👈 start loading
+    setLoading(true); // start spinner
     try {
       const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/auth/login", {
         method: "POST",
@@ -55,6 +56,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
       const data = await res.json();
       if (!res.ok) {
         setBackendError(data.error || "Login failed");
+        setLoading(false);
         return;
       }
 
@@ -70,25 +72,14 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
     } catch (err: any) {
       setBackendError(err.message || "An unexpected error occurred");
     } finally {
-      setLoading(false); // 👈 stop loading
+      setLoading(false); // stop spinner
     }
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-      <form
-        onSubmit={handleSubmit}
-        noValidate
-        style={{
-          width: "350px",
-          padding: "20px",
-          border: "1px solid #ddd",
-          borderRadius: "10px",
-          background: "#fff",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-      >
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Login to Your Account</h2>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit} noValidate>
+        <h2>Login to Your Account</h2>
 
         <label htmlFor="email">Email</label>
         <input
@@ -98,10 +89,10 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
           placeholder="Enter your email"
           value={formData.email}
           onChange={handleChange}
+          className={errors.email ? "input-error" : ""}
           required
-          style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "5px" }}
         />
-        {errors.email && <small style={{ color: "red" }}>{errors.email}</small>}
+        {errors.email && <small className="error-msg">{errors.email}</small>}
 
         <label htmlFor="password">Password</label>
         <input
@@ -111,37 +102,47 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setToken }) => {
           placeholder="Enter your password"
           value={formData.password}
           onChange={handleChange}
+          className={errors.password ? "input-error" : ""}
           required
-          style={{ width: "100%", padding: "10px", marginBottom: "10px", border: "1px solid #ccc", borderRadius: "5px" }}
         />
-        {errors.password && <small style={{ color: "red" }}>{errors.password}</small>}
+        {errors.password && <small className="error-msg">{errors.password}</small>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: loading ? "#aaa" : "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
-        >
+        <button type="submit" className="login-btn" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        {backendError && <p style={{ color: "red", marginTop: "10px" }}>{backendError}</p>}
-        {loading && <p style={{ color: "#555", textAlign: "center", marginTop: "10px" }}>Please wait...</p>}
+        {/* Inline styled spinner */}
+        {loading && (
+          <div
+            style={{
+              margin: "20px auto",
+              border: "4px solid #f3f3f3",
+              borderTop: "4px solid #3498db",
+              borderRadius: "50%",
+              width: "30px",
+              height: "30px",
+              animation: "spin 1s linear infinite",
+            }}
+          />
+        )}
 
-        <p style={{ textAlign: "center", marginTop: "15px" }}>
+        {backendError && <p className="backend-error-msg">{backendError}</p>}
+
+        <p className="register-redirect">
           Don't have an account?{" "}
-          <Link to="/register" style={{ color: "#007bff", textDecoration: "none" }}>
-            Register here
-          </Link>
+          <Link to="/register" className="register-link">Register here</Link>
         </p>
       </form>
+
+      {/* Inline keyframes for spinner */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        `}
+      </style>
     </div>
   );
 };
