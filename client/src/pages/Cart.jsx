@@ -93,7 +93,36 @@ const Cart = () => {
     setPlacingOrder(null);
   };
 
-  if (loading) return <p className="text-center mt-10">Loading cart...</p>;
+  // Loader styles
+  const loaderStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "80vh",
+  };
+
+  const spinnerStyle = {
+    border: "6px solid #f3f3f3",
+    borderTop: "6px solid #1976d2",
+    borderRadius: "50%",
+    width: "50px",
+    height: "50px",
+    animation: "spin 1s linear infinite",
+  };
+
+  if (loading) {
+    return (
+      <div style={loaderStyle}>
+        <div
+          style={spinnerStyle}
+          dangerouslySetInnerHTML={{
+            __html: `<style>@keyframes spin {0% { transform: rotate(0deg);} 100% { transform: rotate(360deg);} }</style>`,
+          }}
+        />
+      </div>
+    );
+  }
+
   if (!cart || cart.items.length === 0)
     return <p className="text-center mt-10">Your cart is empty.</p>;
 
@@ -123,18 +152,14 @@ const Cart = () => {
             <div className="flex flex-col items-end gap-2">
               <div className="flex items-center gap-2 mb-2">
                 <button
-                  onClick={() =>
-                    updateQuantity(item.car._id, item.quantity - 1)
-                  }
+                  onClick={() => updateQuantity(item.car._id, item.quantity - 1)}
                   className="bg-gray-200 px-2 rounded"
                 >
                   -
                 </button>
                 <span>{item.quantity}</span>
                 <button
-                  onClick={() =>
-                    updateQuantity(item.car._id, item.quantity + 1)
-                  }
+                  onClick={() => updateQuantity(item.car._id, item.quantity + 1)}
                   className="bg-gray-200 px-2 rounded"
                 >
                   +
@@ -171,14 +196,8 @@ const Cart = () => {
           <p className="text-2xl font-bold">Grand Total: {cart.total} ETB</p>
         </div>
       </div>
-
-
     </div>
   );
 };
-
-/* 🔽 Extra components for MyOrders & UpdateStatus 🔽 */
-
-
 
 export default Cart;
