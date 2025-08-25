@@ -10,6 +10,7 @@ const RegisterPage = () => {
     password: "",
     role: "buyer", // default role
   });
+  
 
   const [errors, setErrors] = useState({
     username: "",
