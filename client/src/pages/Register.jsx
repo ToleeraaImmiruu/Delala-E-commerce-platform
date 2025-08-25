@@ -27,7 +27,7 @@ const RegisterPage = () => {
   };
 
   const validate = () => {
-    const newErrors = {} as any;
+    const newErrors = {} ;
 
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
