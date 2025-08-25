@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Styling/Register.css";
+
 const RegisterPage = () => {
   const navigate = useNavigate();
 
@@ -10,6 +11,7 @@ const RegisterPage = () => {
     password: "",
     role: "buyer", // default role
   });
+
   const [errors, setErrors] = useState({
     username: "",
     email: "",
@@ -17,7 +19,7 @@ const RegisterPage = () => {
     role: "",
   });
 
-  const [loading, setLoading] = useState(false); // loading state
+  const [loading, setLoading] = useState(false); // spinner state
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -25,7 +27,7 @@ const RegisterPage = () => {
   };
 
   const validate = () => {
-    const newErrors = {};
+    const newErrors = {} as any;
 
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
@@ -44,6 +46,7 @@ const RegisterPage = () => {
     if (!validate()) return;
 
     setLoading(true); // start spinner
+    console.log("Sending to backend:", formData);
 
     try {
       const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/auth/register", {
@@ -68,129 +71,85 @@ const RegisterPage = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-      {loading ? (
-        <div
-          style={{
-            border: "6px solid #f3f3f3",
-            borderTop: "6px solid #3498db",
-            borderRadius: "50%",
-            width: "50px",
-            height: "50px",
-            animation: "spin 1s linear infinite",
-          }}
+    <div className="register-container">
+      <form className="register-form" onSubmit={handleSubmit} noValidate>
+        <h2>Create Your Account</h2>
+
+        <label>Username</label>
+        <input
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
+          placeholder="Enter username"
+          className={errors.username ? "input-error" : ""}
+          required
         />
-      ) : (
-        <form
-          onSubmit={handleSubmit}
-          noValidate
-          style={{
-            background: "#fff",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
-            width: "300px",
-          }}
+        {errors.username && <small className="error-msg">{errors.username}</small>}
+
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Enter email"
+          className={errors.email ? "input-error" : ""}
+          required
+        />
+        {errors.email && <small className="error-msg">{errors.email}</small>}
+
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Enter password"
+          className={errors.password ? "input-error" : ""}
+          required
+        />
+        {errors.password && <small className="error-msg">{errors.password}</small>}
+
+        <label>Role</label>
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          required
         >
-          <h2 style={{ textAlign: "center", marginBottom: "15px" }}>Create Your Account</h2>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
+        </select>
 
-          <label>Username</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Enter username"
+        <button type="submit" className="register-btn" disabled={loading}>
+          {loading ? "Registering..." : "Register"}
+        </button>
+
+        {/* Spinner */}
+        {loading && (
+          <div
             style={{
-              width: "100%",
-              padding: "8px",
-              margin: "5px 0 10px",
-              border: errors.username ? "1px solid red" : "1px solid #ccc",
-              borderRadius: "4px",
+              margin: "20px auto",
+              border: "4px solid #f3f3f3",
+              borderTop: "4px solid #3498db",
+              borderRadius: "50%",
+              width: "30px",
+              height: "30px",
+              animation: "spin 1s linear infinite",
             }}
-            required
           />
-          {errors.username && <small style={{ color: "red" }}>{errors.username}</small>}
+        )}
 
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
-            style={{
-              width: "100%",
-              padding: "8px",
-              margin: "5px 0 10px",
-              border: errors.email ? "1px solid red" : "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-            required
-          />
-          {errors.email && <small style={{ color: "red" }}>{errors.email}</small>}
+        <p className="login-redirect">
+          Already have an account?{" "}
+          <Link to="/login" className="login-link">
+            Login here
+          </Link>
+        </p>
+      </form>
 
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-            style={{
-              width: "100%",
-              padding: "8px",
-              margin: "5px 0 10px",
-              border: errors.password ? "1px solid red" : "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-            required
-          />
-          {errors.password && <small style={{ color: "red" }}>{errors.password}</small>}
-
-          <label>Role</label>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            style={{
-              width: "100%",
-              padding: "8px",
-              margin: "5px 0 15px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-            required
-          >
-            <option value="buyer">Buyer</option>
-            <option value="seller">Seller</option>
-          </select>
-
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "10px",
-              background: "#3498db",
-              color: "#fff",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Register
-          </button>
-
-          <p style={{ textAlign: "center", marginTop: "10px" }}>
-            Already have an account?{" "}
-            <Link to="/login" style={{ color: "#3498db", textDecoration: "none" }}>
-              Login here
-            </Link>
-          </p>
-        </form>
-      )}
-
-      {/* Inline keyframes for spinner */}
+      {/* Inline animation */}
       <style>
         {`
           @keyframes spin {
