@@ -5,7 +5,7 @@ const router = express.Router();
 
 
 
-//only the admin can access 
+//only the admin can access for any things 
 router.get("/admin",verifyToke,authorizeRoles("admin"), (req,res) => {
   res.json({message:"Welcome Admin"})
 })
