@@ -7,10 +7,6 @@ import  verifyToken  from "../middleware/authoMiddleware.js";
 
 const router = express.Router();
 
-/**
- * 🔹 Start a chat between buyer and seller
- * Buyer sends carId → we connect buyer + seller in one chat
- */
 router.post("/start", verifyToken, async (req, res) => {
   try {
     const { carId } = req.body;
@@ -38,7 +34,7 @@ router.post("/start", verifyToken, async (req, res) => {
 });
 
 /**
- * 🔹 Send a message in a chat
+  🔹 Send a message in a chat
  */
 router.post("/send", verifyToken, async (req, res) => {
   try {
