@@ -6,9 +6,8 @@ import Car from "../models/Car.js";
 const router = express.Router();
 
 // 🛒 Place order from cart
-// routes/order.js
-// POST /api/cart/place/:carId
-// 🛒 Place order from cart
+
+
 // 🛒 Place order from cart
 router.post("/place/:carId", verifyToken, async (req, res) => {
   try {
