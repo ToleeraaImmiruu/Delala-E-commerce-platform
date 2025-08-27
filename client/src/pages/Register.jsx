@@ -63,19 +63,14 @@ const RegisterPage = () => {
       console.log("Response from backend:", data);
 
       if (!res.ok) throw new Error(data.error || "Registration failed");
-
-      alert("Registration successful!");
-
-      // ✅ Use role returned from backend if available
-      const userRole = data.role || formData.role;
-
-      if (userRole === "seller") {
-        navigate("/seller-dashboard");
-      } else if (userRole === "buyer") {
-        navigate("/buyer-dashboard");
-      } else {
-        navigate("/login"); // fallback
-      }
+alert("Registration successful!");
+if (formData.role === "seller") {
+  navigate("/seller-dashboard");
+} else if (formData.role === "buyer") {
+  navigate("/buyer-dashboard");
+} else {
+  navigate("/login"); // fallback
+}
     } catch (err) {
       console.error(err);
       alert(err.message);
