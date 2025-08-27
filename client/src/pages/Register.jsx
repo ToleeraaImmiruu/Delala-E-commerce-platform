@@ -27,11 +27,12 @@ const RegisterPage = () => {
   };
 
   const validate = () => {
-    const newErrors = {} ;
+    const newErrors = {};
 
     if (!formData.username.trim()) newErrors.username = "Username is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Invalid email";
+    else if (!/\S+@\S+\.\S+/.test(formData.email))
+      newErrors.email = "Invalid email";
 
     if (!formData.password) newErrors.password = "Password is required";
     else if (formData.password.length < 6)
@@ -49,19 +50,29 @@ const RegisterPage = () => {
     console.log("Sending to backend:", formData);
 
     try {
-      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        "https://delala-e-commerce-backend.onrender.com/api/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await res.json();
       console.log("Response from backend:", data);
 
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
-      alert("Registration successful! Redirecting to login...");
-      navigate("/login");
+      alert("Registration successful!");
+      // role-based redirect
+      if (formData.role === "seller") {
+        navigate("/seller-dashboard");
+      } else if (formData.role === "buyer") {
+        navigate("/buyer-dashboard");
+      } else {
+        navigate("/login"); // fallback
+      }
     } catch (err) {
       console.error(err);
       alert(err.message);
@@ -85,7 +96,9 @@ const RegisterPage = () => {
           className={errors.username ? "input-error" : ""}
           required
         />
-        {errors.username && <small className="error-msg">{errors.username}</small>}
+        {errors.username && (
+          <small className="error-msg">{errors.username}</small>
+        )}
 
         <label>Email</label>
         <input
@@ -109,7 +122,9 @@ const RegisterPage = () => {
           className={errors.password ? "input-error" : ""}
           required
         />
-        {errors.password && <small className="error-msg">{errors.password}</small>}
+        {errors.password && (
+          <small className="error-msg">{errors.password}</small>
+        )}
 
         <label>Role</label>
         <select
