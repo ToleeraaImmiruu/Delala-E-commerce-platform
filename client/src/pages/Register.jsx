@@ -65,10 +65,13 @@ const RegisterPage = () => {
       if (!res.ok) throw new Error(data.error || "Registration failed");
 
       alert("Registration successful!");
-      // role-based redirect
-      if (formData.role === "seller") {
+
+      // ✅ Use role returned from backend if available
+      const userRole = data.role || formData.role;
+
+      if (userRole === "seller") {
         navigate("/seller-dashboard");
-      } else if (formData.role === "buyer") {
+      } else if (userRole === "buyer") {
         navigate("/buyer-dashboard");
       } else {
         navigate("/login"); // fallback
