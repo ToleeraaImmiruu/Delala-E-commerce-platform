@@ -70,7 +70,6 @@ border-radius: 2rem;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
 }
-
 .contact-form button:hover {
   background: #357ab8;
   transform: translateY(-2px);
