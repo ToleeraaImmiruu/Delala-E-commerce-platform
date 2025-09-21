@@ -22,7 +22,6 @@
   grid-template-columns: repeat(4, 1fr);
   gap: 2rem;
 }
-
 .ServiceCard {
   background: white;
   border-radius: 15px;
