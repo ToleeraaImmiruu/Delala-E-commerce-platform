@@ -25,7 +25,6 @@ const Cart = () => {
   useEffect(() => {
     fetchCart();
   }, []);
-
   // Remove item from cart
   const removeItem = async (carId) => {
     try {
