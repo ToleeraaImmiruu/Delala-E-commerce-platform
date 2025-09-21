@@ -7,7 +7,6 @@ const Cart = () => {
   const [placingOrder, setPlacingOrder] = useState(null); // track which item is being ordered
 
   const token = localStorage.getItem("token");
-
   // Fetch user cart
   const fetchCart = async () => {
     setLoading(true);
