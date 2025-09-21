@@ -17,7 +17,6 @@
   color: #333;
   margin-bottom: 3rem;
 }
-
 .ServicesGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
