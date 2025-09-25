@@ -17,7 +17,6 @@ function Navbar({ onSearch }) {
   const handleCartClick = () => {
     navigate("/cart"); // Redirect to /cart
   };
-
   const handleSearch = (e) => {
     e.preventDefault();
     if (query.trim() !== "") {
