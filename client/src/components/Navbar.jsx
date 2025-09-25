@@ -14,7 +14,6 @@ function Navbar({ onSearch }) {
   const handleLoginClick = () => {
     navigate("/login");
   };
-  
 
   const handleCartClick = () => {
     navigate("/cart"); // Redirect to /cart
