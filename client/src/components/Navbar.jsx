@@ -26,7 +26,6 @@ function Navbar({ onSearch }) {
       navigate(`/search?q=${query}`);
     }
   };
-
   return (
     <nav className="navbar">
       {/* Logo */}
