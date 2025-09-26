@@ -33,7 +33,6 @@
   cursor: pointer;
   transition: color 0.3s;
 }
-
 .footer-section ul li:hover {
   color: #4a90e2;
 }
