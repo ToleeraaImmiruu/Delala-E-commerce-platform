@@ -47,7 +47,6 @@
   cursor: default;
   outline-offset: 4px;
 }
-
 .card:focus,
 .card:hover {
   transform: translateY(-10px);
