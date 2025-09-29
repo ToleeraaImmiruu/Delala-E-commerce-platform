@@ -48,7 +48,6 @@
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
-
 .login-form input:focus {
   outline: none;
   border-color: rgb(66, 33, 199);
