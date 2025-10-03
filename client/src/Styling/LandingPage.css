@@ -24,8 +24,6 @@ margin-left: 2.5rem;
   transition: transform 0.3s ease;
 }
 
-
-
 .LandingText:hover {
   transform: translateY(-10px);
 }
