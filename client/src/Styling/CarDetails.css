@@ -12,6 +12,7 @@
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   transition: 0.3s;
 }
+
 .car-card:hover {
   transform: translateY(-5px);
 }
