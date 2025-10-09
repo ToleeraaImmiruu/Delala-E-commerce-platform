@@ -18,6 +18,7 @@
   transition: box-shadow 0.3s ease;
 }
 
+
 .login-form:hover {
   box-shadow: 0 20px 40px rgba(66, 33, 199, 0.5);
 }
