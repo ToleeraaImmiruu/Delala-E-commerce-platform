@@ -5,7 +5,6 @@
 }
 
 /* 📱 Mobile Responsive CSS  */
-/* ========================= */
 @media (max-width: 480px) {
   .ImageGallery22 {
     display: flex;
