@@ -8,7 +8,7 @@
 @media (max-width: 480px) {
   .ImageGallery22 {
     display: flex;
-    flex-direction: column; /* stack items vertically */
+    flex-direction: column;
     align-items: center;
     gap: 15px;
     padding: 10px;
