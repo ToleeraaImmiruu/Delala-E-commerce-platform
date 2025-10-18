@@ -3,7 +3,7 @@
   background: #f8f9fa;
   margin-top: 3rem;
 }
-/* 📱 Mobile Responsive CSS  */
+/* 📱 Mobile Responsive   */
 @media (max-width: 480px) {
   .ImageGallery22 {
     display: flex;
