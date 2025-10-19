@@ -15,7 +15,6 @@
 .car-card:hover {
   transform: translateY(-5px);
 }
-
 .car-name {
   font-size: 20px;
   margin-bottom: 10px;
