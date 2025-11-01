@@ -20,7 +20,6 @@
   font-size: 1rem;
   transition: border-color 0.3s ease;
 }
-
 .register-form select:focus {
   outline: none;
   border-color: rgb(66, 33, 199);
