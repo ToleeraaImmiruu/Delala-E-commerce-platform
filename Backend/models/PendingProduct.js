@@ -5,10 +5,12 @@ const pendingProductSchema = new mongoose.Schema({
 
   // same fields the seller fills
   name: { type: String, required: true },
-  price: { type: Number, required: true },
-  location: { type: String, required: true },
-  type: { type: String, required: true },
-
+  predictedPrice: { type: String, required: true },
+  year: { type: Number, required: true },
+  km_driven: { Number },
+  fuel: { String },
+  owner: { String  },
+  seats: { Number },
   // store both url + publicId so we can rename/move/delete on approval/reject
   images: [{
     url: { type: String, required: true },
