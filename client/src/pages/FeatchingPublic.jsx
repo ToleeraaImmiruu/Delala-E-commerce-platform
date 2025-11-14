@@ -24,7 +24,7 @@ const PublicProducts = ({ currentUser }) => {
   // ---------------- Fetch All Products ----------------
   const fetchProducts = () => {
     setLoading(true);
-    fetch("https://delala-e-commerce-backend.onrender.com/api/product/allCar")
+    fetch("https://delala-e-commerce-backend.onrender.com/api/allCar")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) setProducts(data.products);
@@ -42,7 +42,7 @@ const PublicProducts = ({ currentUser }) => {
 
     try {
       const res = await fetch(
-        "https://delala-e-commerce-backend.onrender.com/api/product/delete",
+        "https://delala-e-commerce-backend.onrender.com/api/delete",
         {
           method: "POST",
           headers: { 
@@ -91,7 +91,7 @@ const PublicProducts = ({ currentUser }) => {
   const handleEditSubmit = async (carId) => {
     try {
       const res = await fetch(
-        `https://delala-e-commerce-backend.onrender.com/api/product/edit/${carId}`,
+        `https://delala-e-commerce-backend.onrender.com/api/edit/${carId}`,
         {
           method: "PUT",
           headers: {
