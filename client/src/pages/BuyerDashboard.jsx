@@ -14,7 +14,7 @@ const PublicProducts = () => {
   const fetchProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/public");
+      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/allCar");
       const data = await res.json();
       if (data.success) setProducts(data.products);
     } catch (err) {
@@ -97,63 +97,78 @@ const PublicProducts = () => {
     );
   }
 
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-        gap: "20px",
-        padding: "20px",
-      }}
-    >
-      {products.length === 0 ? (
-        <p>No products available</p>
-      ) : (
-        products.map((product) => (
-          <div
-            key={product._id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "10px",
-              padding: "15px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-              textAlign: "center",
-            }}
-          >
-            {product.images && product.images.length > 0 && (
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                style={{ width: "100%", height: "180px", objectFit: "cover", borderRadius: "8px" }}
-              />
-            )}
-            <div style={{ marginTop: "10px" }}>
-              <h3 style={{ margin: "8px 0" }}>{product.name}</h3>
-              <p><strong>Price:</strong> ${product.price}</p>
-              <p><strong>Location:</strong> {product.location}</p>
-              <p><strong>Type:</strong> {product.type}</p>
+return (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+      gap: "20px",
+      padding: "20px",
+    }}
+  >
+    {products.length === 0 ? (
+      <p>No products available</p>
+    ) : (
+      products.map((product) => (
+        <div
+          key={product._id}
+          style={{
+            border: "1px solid #ddd",
+            borderRadius: "10px",
+            padding: "15px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            textAlign: "center",
+          }}
+        >
+          {product.images && product.images.length > 0 && (
+            <img
+              src={product.images[0]}
+              alt={product.name}
+              style={{
+                width: "100%",
+                height: "180px",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
+            />
+          )}
 
-              <div style={{ marginTop: "10px" }}>
-                <button
-                  style={viewButtonStyle}
-                  onClick={() => alert("View details clicked!")}
-                >
-                  View Details
-                </button>
-                <button
-                  style={addCartButtonStyle}
-                  onClick={() => handleAddToCart(product)}
-                  disabled={cartLoading}
-                >
-                  {cartLoading ? "Adding..." : "Add to Cart"}
-                </button>
-              </div>
+          <div style={{ marginTop: "10px" }}>
+            <h3 style={{ margin: "8px 0" }}>{product.name}</h3>
+
+            {/* ML FEATURES */}
+            <p><strong>Year:</strong> {product.year}</p>
+            <p><strong>Kilometers Driven:</strong> {product.km_driven}</p>
+            <p><strong>Fuel Type:</strong> {product.fuel}</p>
+            <p><strong>Owner:</strong> {product.owner}</p>
+            <p><strong>Seats:</strong> {product.seats}</p>
+
+            {/* NORMAL FIELDS */}
+            <p><strong>Location:</strong> {product.location}</p>
+
+            <div style={{ marginTop: "10px" }}>
+              <button
+                style={viewButtonStyle}
+                onClick={() => alert("View details clicked!")}
+              >
+                View Details
+              </button>
+
+              <button
+                style={addCartButtonStyle}
+                onClick={() => handleAddToCart(product)}
+                disabled={cartLoading}
+              >
+                {cartLoading ? "Adding..." : "Add to Cart"}
+              </button>
             </div>
           </div>
-        ))
-      )}
-    </div>
-  );
+        </div>
+      ))
+    )}
+  </div>
+);
+
 };
 
 export default PublicProducts;
