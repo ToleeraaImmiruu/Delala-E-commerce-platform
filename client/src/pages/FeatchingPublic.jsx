@@ -5,7 +5,15 @@ const PublicProducts = ({ currentUser }) => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState(null);
-  const [editData, setEditData] = useState({ name: "", price: "", location: "", type: "", images: [] });
+
+  const [editData, setEditData] = useState({
+    name: "",
+    year: "",
+    km_driven: "",
+    fuel: "",
+    owner: "",
+    seats: "",
+  });
 
   const token = localStorage.getItem("token");
 
@@ -13,11 +21,10 @@ const PublicProducts = ({ currentUser }) => {
     fetchProducts();
   }, []);
 
+  // ---------------- Fetch All Products ----------------
   const fetchProducts = () => {
     setLoading(true);
-    fetch("https://delala-e-commerce-backend.onrender.com/api/public", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    fetch("https://delala-e-commerce-backend.onrender.com/api/product/allCar")
       .then((res) => res.json())
       .then((data) => {
         if (data.success) setProducts(data.products);
@@ -29,17 +36,27 @@ const PublicProducts = ({ currentUser }) => {
       });
   };
 
-  const handleDelete = async (id) => {
+  // ---------------- Delete Product ----------------
+  const handleDelete = async (carId) => {
     if (!window.confirm("Are you sure you want to delete this product?")) return;
 
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/delete1/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        "https://delala-e-commerce-backend.onrender.com/api/product/delete",
+        {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ carId }),
+        }
+      );
+
       const data = await res.json();
+
       if (data.success) {
-        alert("Product deleted successfully");
+        alert("Product deleted");
         fetchProducts();
       } else {
         alert(data.message);
@@ -50,35 +67,45 @@ const PublicProducts = ({ currentUser }) => {
     }
   };
 
+  // ---------------- Start Editing ----------------
   const startEditing = (product) => {
-    setEditingId(product._id);
+    setEditingId(product.carId);
+
     setEditData({
       name: product.name,
-      price: product.price,
-      location: product.location,
-      type: product.type,
-      images: product.images || [],
+      year: product.year,
+      km_driven: product.km_driven,
+      fuel: product.fuel,
+      owner: product.owner,
+      seats: product.seats,
     });
   };
 
+  // ---------------- Input Change ----------------
   const handleEditChange = (e) => {
     const { name, value } = e.target;
     setEditData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleEditSubmit = async (id) => {
+  // ---------------- Save Edited Product ----------------
+  const handleEditSubmit = async (carId) => {
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/edit1/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(editData),
-      });
+      const res = await fetch(
+        `https://delala-e-commerce-backend.onrender.com/api/product/edit/${carId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editData),
+        }
+      );
+
       const data = await res.json();
+
       if (data.success) {
-        alert("Product updated successfully");
+        alert("Product updated");
         setEditingId(null);
         fetchProducts();
       } else {
@@ -92,39 +119,14 @@ const PublicProducts = ({ currentUser }) => {
 
   if (loading) return <p>Loading products...</p>;
 
-  // Inline styles for buttons
-  const buttonStyle = {
+  // Styles
+  const btn = {
     padding: "8px 10px",
     margin: "5px",
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
     fontWeight: "bold",
-    transition: "all 0.3s ease",
-  };
-
-  const editButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#4CAF50",
-    color: "#fff",
-  };
-
-  const deleteButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#f44336",
-    color: "#fff",
-  };
-
-  const saveButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#2196F3",
-    color: "#fff",
-  };
-
-  const cancelButtonStyle = {
-    ...buttonStyle,
-    backgroundColor: "#777",
-    color: "#fff",
   };
 
   return (
@@ -132,61 +134,51 @@ const PublicProducts = ({ currentUser }) => {
       {products.length === 0 ? (
         <p>No products available</p>
       ) : (
-        products.map((product) => (
-          <div key={product._id} className="CarCard2">
-            {product.images && product.images.length > 0 && (
-              <img src={product.images[0]} alt={product.name} className="GalleryImage2" />
+        products.map((p) => (
+          <div key={p.carId} className="CarCard2">
+
+            {p.images && p.images.length > 0 && (
+              <img src={p.images[0]} alt={p.name} className="GalleryImage2" />
             )}
 
             <div className="CarDetails2">
-              {editingId === product._id ? (
+              {editingId === p.carId ? (
                 <div className="EditForm">
-                  <input
-                    type="text"
-                    name="name"
-                    value={editData.name}
-                    onChange={handleEditChange}
-                    placeholder="Name"
-                  />
-                  <input
-                    type="number"
-                    name="price"
-                    value={editData.price}
-                    onChange={handleEditChange}
-                    placeholder="Price"
-                  />
-                  <input
-                    type="text"
-                    name="location"
-                    value={editData.location}
-                    onChange={handleEditChange}
-                    placeholder="Location"
-                  />
-                  <input
-                    type="text"
-                    name="type"
-                    value={editData.type}
-                    onChange={handleEditChange}
-                    placeholder="Type"
-                  />
-                  <button style={saveButtonStyle} onClick={() => handleEditSubmit(product._id)}>Save</button>
-                  <button style={cancelButtonStyle} onClick={() => setEditingId(null)}>Cancel</button>
+                  <input name="name" value={editData.name} onChange={handleEditChange} />
+                  <input name="year" value={editData.year} onChange={handleEditChange} />
+                  <input name="km_driven" value={editData.km_driven} onChange={handleEditChange} />
+                  <input name="fuel" value={editData.fuel} onChange={handleEditChange} />
+                  <input name="owner" value={editData.owner} onChange={handleEditChange} />
+                  <input name="seats" value={editData.seats} onChange={handleEditChange} />
+
+                  <button style={{ ...btn, background: "#2196F3", color: "white" }}
+                          onClick={() => handleEditSubmit(p.carId)}>Save</button>
+                  <button style={{ ...btn, background: "#555", color: "white" }}
+                          onClick={() => setEditingId(null)}>Cancel</button>
                 </div>
               ) : (
                 <div>
-                  <h3>{product.name}</h3>
-                  <p><strong>Price:</strong> ${product.price}</p>
-                  <p><strong>Location:</strong> {product.location}</p>
-                  <p><strong>Type:</strong> {product.type}</p>
-                  <button style={{ ...buttonStyle, backgroundColor: "#ff9800", color: "#fff"  }}>View Details</button>
+                  <h3>{p.name}</h3>
+                  <p><strong>Price:</strong> ${p.price}</p>
+                  <p><strong>Year:</strong> {p.year}</p>
+                  <p><strong>KM Driven:</strong> {p.km_driven}</p>
+                  <p><strong>Fuel:</strong> {p.fuel}</p>
+                  <p><strong>Owner:</strong> {p.owner}</p>
+                  <p><strong>Seats:</strong> {p.seats}</p>
 
-                  {/* Edit/Delete buttons for the seller */}
-                  {currentUser && String(product.sellerId) === String(currentUser.id || currentUser._id) && (
-                    <>
-                      <button style={editButtonStyle} onClick={() => startEditing(product)}>Edit</button>
-                      <button style={deleteButtonStyle} onClick={() => handleDelete(product._id)}>Delete</button>
-                    </>
-                  )}
+                  <button style={{ ...btn, background: "#ff9800", color: "#fff" }}>
+                    View Details
+                  </button>
+
+                  {currentUser &&
+                    String(p.sellerId) === String(currentUser._id || currentUser.id) && (
+                      <>
+                        <button style={{ ...btn, background: "#4CAF50", color: "#fff" }}
+                                onClick={() => startEditing(p)}>Edit</button>
+                        <button style={{ ...btn, background: "#f44336", color: "#fff" }}
+                                onClick={() => handleDelete(p.carId)}>Delete</button>
+                      </>
+                    )}
                 </div>
               )}
             </div>
