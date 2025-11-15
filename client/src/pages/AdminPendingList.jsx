@@ -8,9 +8,12 @@ const AdminDashboard = () => {
   const fetchPendingProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/pending", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await fetch(
+        "https://delala-e-commerce-backend.onrender.com/api/pending",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       const data = await res.json();
       if (data.success) setPendingProducts(data.pending);
       else setPendingProducts([]);
@@ -28,13 +31,16 @@ const AdminDashboard = () => {
   const approveProduct = async (id) => {
     if (!window.confirm("Approve this product?")) return;
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/approve-product/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `https://delala-e-commerce-backend.onrender.com/api/approve-product/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const data = await res.json();
       if (data.success) {
         alert("✅ Product approved");
@@ -50,14 +56,17 @@ const AdminDashboard = () => {
   const rejectProduct = async (id) => {
     if (!window.confirm("Reject this product?")) return;
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/reject-product/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ notes: "Rejected by admin" }),
-      });
+      const res = await fetch(
+        `https://delala-e-commerce-backend.onrender.com/api/reject-product/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ notes: "Rejected by admin" }),
+        }
+      );
       const data = await res.json();
       if (data.success) {
         alert("❌ Product rejected");
@@ -106,11 +115,10 @@ const AdminDashboard = () => {
               </div>
               <div className="flex-1 mt-2 sm:mt-0">
                 <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-green-600 font-bold">${product.price}</p>
-                <p className="text-gray-600 text-sm">
-                  Location: {product.location}
+                <p className="text-green-600 font-bold">
+                  ${Number(product.predictedPrice).toLocaleString()}
                 </p>
-                <p className="text-gray-600 text-sm">Type: {product.type}</p>
+                <p className="text-gray-600 text-sm">Fuel: {product.fuel}</p>
                 <p
                   className={`inline-block mt-1 px-2 py-1 rounded text-xs font-semibold ${
                     product.status === "pending"
