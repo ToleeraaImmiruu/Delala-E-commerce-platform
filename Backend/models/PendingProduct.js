@@ -4,7 +4,7 @@ const pendingProductSchema = new mongoose.Schema({
   sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
 
   name: { type: String, required: true },
-  predictedPrice: { type: Number, required: true },
+  predictedPrice: { type: String, required: true },
   year: { type: Number, required: true },
   km_driven: { type: Number },
   fuel: { type: String },
