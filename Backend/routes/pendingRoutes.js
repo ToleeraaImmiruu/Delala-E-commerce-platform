@@ -1,27 +1,80 @@
-import mongoose from "mongoose";
+import express from "express";
+import upload from "../middleware/uploadMiddleware.js";
+import PendingProduct from "../models/PendingProduct.js";
+import verifyToke from "../middleware/authoMiddleware.js";
+import axios from "axios";
 
-const pendingProductSchema = new mongoose.Schema({
-  sellerId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+const router = express.Router();
 
-  // same fields the seller fills
-  name: { type: String, required: true },
-  predictedPrice: { type: String, required: true },
-  year: { type: Number, required: true },
-  km_driven: { Number },
-  fuel: { String },
-  owner: { String  },
-  seats: { Number },
-  // store both url + publicId so we can rename/move/delete on approval/reject
-  images: [{
-    url: { type: String, required: true },
-    publicId: { type: String, required: true }
-  }],
+router.post(
+  "/pending-products",
+  verifyToke,
+  upload.array("products", 5),   // MUST MATCH FRONTEND
+  async (req, res) => {
+    try {
+      const { name, year, km_driven, fuel, owner, seats } = req.body;
 
-  // moderation fields
-  status: { type: String, enum: ["pending", "approved", "rejected"], default: "pending" },
-  adminNotes: { type: String },
-  submittedAt: { type: Date, default: Date.now },
-  decidedAt: { type: Date }
-});
+      if (!name || !year || !km_driven || !fuel || !owner || !seats) {
+        return res.status(400).json({
+          success: 0,
+          message: "Missing required fields",
+        });
+      }
 
-export default mongoose.model("PendingProduct", pendingProductSchema);
+      // Prepare data for ML model
+      const mlPayload = {
+        name,
+        year: Number(year),
+        km_driven: Number(km_driven),
+        fuel,
+        owner,
+        seats: Number(seats),
+      };
+
+      // Call FastAPI
+      const mlRes = await axios.post(
+        "https://car-price-predictor-zw40.onrender.com/predict",
+        mlPayload
+      );
+
+      let predictedPrice = mlRes.data?.predicted_price || mlRes.data?.price;
+
+      // Convert if needed
+      predictedPrice = Number(predictedPrice);
+
+      if (isNaN(predictedPrice)) {
+        return res.status(500).json({
+          success: 0,
+          message: "AI prediction response invalid",
+        });
+      }
+
+      // Map uploaded Cloudinary images
+      const images = req.files.map((file) => ({
+        url: file.path,
+        publicId: file.filename,
+      }));
+
+      // Save product
+      const pending = await PendingProduct.create({
+        sellerId: req.user.id,
+        name,
+        year,
+        km_driven,
+        fuel,
+        owner,
+        seats,
+        predictedPrice,
+        images,
+        status: "pending",
+      });
+
+      return res.json({ success: 1, pending });
+    } catch (err) {
+      console.error("UPLOAD ERROR:", err);
+      return res.status(500).json({ success: 0, message: err.message });
+    }
+  }
+);
+
+export default router;
