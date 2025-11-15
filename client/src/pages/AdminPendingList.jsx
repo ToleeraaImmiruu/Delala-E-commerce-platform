@@ -8,10 +8,9 @@ const AdminDashboard = () => {
   const fetchPendingProducts = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/admin/pending", {
+      const res = await fetch("https://delala-e-commerce-backend.onrender.com/api/pending", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       const data = await res.json();
       if (data.success) setPendingProducts(data.pending);
       else setPendingProducts([]);
@@ -29,14 +28,13 @@ const AdminDashboard = () => {
   const approveProduct = async (id) => {
     if (!window.confirm("Approve this product?")) return;
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/admin/approve-product/${id}`, {
+      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/approve-product/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-
       const data = await res.json();
       if (data.success) {
         alert("✅ Product approved");
@@ -52,7 +50,7 @@ const AdminDashboard = () => {
   const rejectProduct = async (id) => {
     if (!window.confirm("Reject this product?")) return;
     try {
-      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/admin/reject-product/${id}`, {
+      const res = await fetch(`https://delala-e-commerce-backend.onrender.com/api/reject-product/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +58,6 @@ const AdminDashboard = () => {
         },
         body: JSON.stringify({ notes: "Rejected by admin" }),
       });
-
       const data = await res.json();
       if (data.success) {
         alert("❌ Product rejected");
@@ -107,13 +104,13 @@ const AdminDashboard = () => {
                   </div>
                 )}
               </div>
-
               <div className="flex-1 mt-2 sm:mt-0">
                 <h3 className="text-lg font-semibold">{product.name}</h3>
                 <p className="text-green-600 font-bold">${product.price}</p>
-                <p className="text-gray-600 text-sm">Location: {product.location}</p>
+                <p className="text-gray-600 text-sm">
+                  Location: {product.location}
+                </p>
                 <p className="text-gray-600 text-sm">Type: {product.type}</p>
-
                 <p
                   className={`inline-block mt-1 px-2 py-1 rounded text-xs font-semibold ${
                     product.status === "pending"
@@ -126,7 +123,6 @@ const AdminDashboard = () => {
                   {product.status}
                 </p>
               </div>
-
               <div className="flex gap-2 mt-3 sm:mt-0 sm:flex-col sm:justify-center">
                 <button
                   onClick={() => approveProduct(product._id)}
