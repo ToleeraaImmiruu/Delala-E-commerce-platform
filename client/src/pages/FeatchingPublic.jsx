@@ -138,15 +138,16 @@ const PublicProducts = ({ currentUser }) => {
           <div key={p._id} className="CarCard2">
 
             {/* ---------- Image ---------- */}
-            {p.images && p.images.length > 0 ? (
-              <img
-                src={p.images[0]}
-                alt={p.name}
-                className="GalleryImage2"
-              />
-            ) : (
-              <div className="GalleryImage2 NoImageBox">No Image</div>
-            )}
+           {p.images && p.images.length > 0 ? (
+  <img
+    src={p.images[0].url}
+    alt={p.name}
+    className="GalleryImage2"
+  />
+) : (
+  <div className="GalleryImage2 NoImageBox">No Image</div>
+)}
+
 
             <div className="CarDetails2">
               {/* ---------- EDIT MODE ---------- */}
@@ -200,8 +201,9 @@ const PublicProducts = ({ currentUser }) => {
               ) : (
                 /* ---------- SHOW MODE ---------- */
                 <div>
-                  <h3>{p.name}</h3>
-                  <p><strong>Price:</strong> {p.price}</p>
+                
+                  <h3><strong>Name:</strong> {p.name}</h3>
+                  <p><strong>Price:</strong> {p.predictedPrice}</p>
                   <p><strong>Year:</strong> {p.year}</p>
                   <p><strong>KM Driven:</strong> {p.km_driven}</p>
                   <p><strong>Fuel:</strong> {p.fuel}</p>
