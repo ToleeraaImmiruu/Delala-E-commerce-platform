@@ -45,9 +45,9 @@ const PublicProducts = ({ currentUser }) => {
         "https://delala-e-commerce-backend.onrender.com/api/delete",
         {
           method: "POST",
-          headers: { 
+          headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ carId }),
         }
@@ -69,7 +69,7 @@ const PublicProducts = ({ currentUser }) => {
 
   // ---------------- Start Editing ----------------
   const startEditing = (product) => {
-    setEditingId(product.carId);
+    setEditingId(product._id);
 
     setEditData({
       name: product.name,
@@ -119,7 +119,7 @@ const PublicProducts = ({ currentUser }) => {
 
   if (loading) return <p>Loading products...</p>;
 
-  // Styles
+  // Button Style
   const btn = {
     padding: "8px 10px",
     margin: "5px",
@@ -135,48 +135,111 @@ const PublicProducts = ({ currentUser }) => {
         <p>No products available</p>
       ) : (
         products.map((p) => (
-          <div key={p.carId} className="CarCard2">
+          <div key={p._id} className="CarCard2">
 
-            {p.images && p.images.length > 0 && (
-              <img src={p.images[0]} alt={p.name} className="GalleryImage2" />
+            {/* ---------- Image ---------- */}
+            {p.images && p.images.length > 0 ? (
+              <img
+                src={p.images[0]}
+                alt={p.name}
+                className="GalleryImage2"
+              />
+            ) : (
+              <div className="GalleryImage2 NoImageBox">No Image</div>
             )}
 
             <div className="CarDetails2">
-              {editingId === p.carId ? (
+              {/* ---------- EDIT MODE ---------- */}
+              {editingId === p._id ? (
                 <div className="EditForm">
-                  <input name="name" value={editData.name} onChange={handleEditChange} />
-                  <input name="year" value={editData.year} onChange={handleEditChange} />
-                  <input name="km_driven" value={editData.km_driven} onChange={handleEditChange} />
-                  <input name="fuel" value={editData.fuel} onChange={handleEditChange} />
-                  <input name="owner" value={editData.owner} onChange={handleEditChange} />
-                  <input name="seats" value={editData.seats} onChange={handleEditChange} />
+                  <input
+                    name="name"
+                    value={editData.name}
+                    onChange={handleEditChange}
+                  />
+                  <input
+                    name="year"
+                    value={editData.year}
+                    onChange={handleEditChange}
+                  />
+                  <input
+                    name="km_driven"
+                    value={editData.km_driven}
+                    onChange={handleEditChange}
+                  />
+                  <input
+                    name="fuel"
+                    value={editData.fuel}
+                    onChange={handleEditChange}
+                  />
+                  <input
+                    name="owner"
+                    value={editData.owner}
+                    onChange={handleEditChange}
+                  />
+                  <input
+                    name="seats"
+                    value={editData.seats}
+                    onChange={handleEditChange}
+                  />
 
-                  <button style={{ ...btn, background: "#2196F3", color: "white" }}
-                          onClick={() => handleEditSubmit(p.carId)}>Save</button>
-                  <button style={{ ...btn, background: "#555", color: "white" }}
-                          onClick={() => setEditingId(null)}>Cancel</button>
+                  <button
+                    style={{ ...btn, background: "#2196F3", color: "white" }}
+                    onClick={() => handleEditSubmit(p._id)}
+                  >
+                    Save
+                  </button>
+
+                  <button
+                    style={{ ...btn, background: "#555", color: "white" }}
+                    onClick={() => setEditingId(null)}
+                  >
+                    Cancel
+                  </button>
                 </div>
               ) : (
+                /* ---------- SHOW MODE ---------- */
                 <div>
                   <h3>{p.name}</h3>
-                  <p><strong>Price:</strong> ${p.price}</p>
+                  <p><strong>Price:</strong> {p.price}</p>
                   <p><strong>Year:</strong> {p.year}</p>
                   <p><strong>KM Driven:</strong> {p.km_driven}</p>
                   <p><strong>Fuel:</strong> {p.fuel}</p>
                   <p><strong>Owner:</strong> {p.owner}</p>
                   <p><strong>Seats:</strong> {p.seats}</p>
 
-                  <button style={{ ...btn, background: "#ff9800", color: "#fff" }}>
+                  <button
+                    style={{ ...btn, background: "#ff9800", color: "#fff" }}
+                  >
                     View Details
                   </button>
 
+                  {/* ---------- Only Seller Can Edit/Delete ---------- */}
                   {currentUser &&
-                    String(p.sellerId) === String(currentUser._id || currentUser.id) && (
+                    String(p.sellerId) ===
+                      String(currentUser._id || currentUser.id) && (
                       <>
-                        <button style={{ ...btn, background: "#4CAF50", color: "#fff" }}
-                                onClick={() => startEditing(p)}>Edit</button>
-                        <button style={{ ...btn, background: "#f44336", color: "#fff" }}
-                                onClick={() => handleDelete(p.carId)}>Delete</button>
+                        <button
+                          style={{
+                            ...btn,
+                            background: "#4CAF50",
+                            color: "#fff",
+                          }}
+                          onClick={() => startEditing(p)}
+                        >
+                          Edit
+                        </button>
+
+                        <button
+                          style={{
+                            ...btn,
+                            background: "#f44336",
+                            color: "#fff",
+                          }}
+                          onClick={() => handleDelete(p._id)}
+                        >
+                          Delete
+                        </button>
                       </>
                     )}
                 </div>
