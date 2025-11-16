@@ -34,9 +34,8 @@ router.post("/approve-product/:id", verifyToke, async (req, res) => {
       carId: pending._id.toString(),
       sellerId: pending.sellerId,
       name: pending.name,
-      price: pending.price,
-      location: pending.location,
-      type: pending.type,
+      predictedPrice: pending.predictedPrice,
+    
 
       // ML fields
       year: pending.year,
